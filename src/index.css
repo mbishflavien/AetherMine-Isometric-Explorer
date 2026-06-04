@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@405;600;700&family=Space+Grotesk:wght@400;500;650;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Custom glow animations and layouts */
+@keyframes scanning-pulse {
+  0% { transform: translateY(-5px); opacity: 0.3; }
+  50% { transform: translateY(5px); opacity: 0.8; }
+  100% { transform: translateY(-5px); opacity: 0.3; }
+}
+
+.animate-scan-pulse {
+  animation: scanning-pulse 3s infinite ease-in-out;
+}
+
+/* Custom styling for interactive sliders */
+input[type="range"]::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #00D4FF;
+  box-shadow: 0 0 8px #00D4FF;
+  cursor: pointer;
+}
+
+/* Custom scrollbars for cyber-noir terminals */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6.5px;
+}
+::-webkit-scrollbar-track {
+  background: #0D1117;
+}
+::-webkit-scrollbar-thumb {
+  background: #1F2937;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #374151;
+}

@@ -1,0 +1,6 @@
+{
+  "name": "AetherMine Isometric Explorer",
+  "description": "Interactive isometric 3D layer-cake cross-section infographic and deep-tech simulation of a high-tech mine site, highlighting cyber-noir visualization, GPR grids, and machine learning mine planning.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
