@@ -3,24 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef } from "react";
-import { 
-  HelpCircle, 
-  Map, 
-  Cpu, 
-  ShieldAlert, 
-  Info, 
-  Compass, 
-  TrendingUp, 
-  X,
-  Radio,
-  Zap,
-  CheckCircle,
-  Database,
-  ArrowUpRight,
-  Volume2,
-  VolumeX
-} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Compass, HelpCircle, Volume2, VolumeX } from "lucide-react";
 import { SensorStream, MiningBlock, LedgerRecord } from "./types";
 import MiningCanvas from "./components/MiningCanvas";
 import Dashboard from "./components/Dashboard";

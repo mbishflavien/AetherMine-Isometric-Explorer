@@ -15,7 +15,6 @@ import {
   TrendingUp, 
   Clock, 
   ShieldCheck, 
-  Check, 
   AlertCircle,
   Database,
   RefreshCw,
