@@ -250,7 +250,7 @@ export default function App() {
 
         {/* HUD state indicators */}
         <div className="flex items-center gap-4">
-          <div className="hidden lg:flex items-center gap-2.5 bg-[#090D15] p-1.5 px-3 rounded-lg border border-slate-850">
+          <div className="hidden lg:flex items-center gap-2.5 bg-[#090D15] p-1.5 px-3 rounded-lg border border-slate-800">
             <span className="flex h-2 w-2 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#39FF14] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#39FF14]"></span>
@@ -266,7 +266,7 @@ export default function App() {
 
           <button
             onClick={() => { audioEngine.playClick(); setShowHelpModal(true); }}
-            className="flex items-center gap-1 text-xs text-slate-400 hover:text-[#00D4FF] bg-[#121825] hover:bg-[#1A253A] border border-[#1F2937] p-1.5 px-3 rounded-lg transition duration-155"
+            className="flex items-center gap-1 text-xs text-slate-400 hover:text-[#00D4FF] bg-[#121825] hover:bg-[#1A253A] border border-[#1F2937] p-1.5 px-3 rounded-lg transition duration-150"
           >
             <HelpCircle className="w-4 h-4" /> <span className="hidden sm:inline">Diagnostics & Specs</span>
           </button>
@@ -389,7 +389,7 @@ export default function App() {
               <div className="mt-6 flex justify-end">
                 <button
                   onClick={() => { audioEngine.playClick(); setShowHelpModal(false); }}
-                  className="bg-[#00D4FF]/15 hover:bg-[#00D4FF]/35 text-[#00D4FF] border border-[#00D4FF]/40 font-mono font-bold text-xs py-2 px-4 rounded transition duration-155"
+                  className="bg-[#00D4FF]/15 hover:bg-[#00D4FF]/35 text-[#00D4FF] border border-[#00D4FF]/40 font-mono font-bold text-xs py-2 px-4 rounded transition duration-150"
                 >
                   Confirm Diagnostics & Close
                 </button>

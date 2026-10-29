@@ -131,7 +131,7 @@ export default function Dashboard({
         <div className="flex gap-2">
           <button
             onClick={() => { audioEngine.playClick(); setActiveTab("ML_PIPELINE"); }}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold tracking-wider transition duration-155 flex items-center gap-2 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold tracking-wider transition duration-150 flex items-center gap-2 ${
               activeTab === "ML_PIPELINE" 
                 ? "bg-[#00D4FF]/15 text-[#00D4FF] border border-[#00D4FF]/30" 
                 : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/20"
@@ -142,7 +142,7 @@ export default function Dashboard({
           
           <button
             onClick={() => { audioEngine.playClick(); setActiveTab("BLOCK_LEDGER"); }}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold tracking-wider transition duration-155 flex items-center gap-2 ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold tracking-wider transition duration-150 flex items-center gap-2 ${
               activeTab === "BLOCK_LEDGER" 
                 ? "bg-[#5DDB50]/15 text-[#39FF14] border border-[#39FF14]/30" 
                 : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/20"
@@ -215,7 +215,7 @@ export default function Dashboard({
                             </span>
                             <button
                               onClick={() => handleStreamToggle(stream.id, stream.status)}
-                              className={`text-[10px] font-mono font-bold px-2.5 py-1 rounded transition duration-155 ${
+                              className={`text-[10px] font-mono font-bold px-2.5 py-1 rounded transition duration-150 ${
                                 isActive 
                                   ? "bg-[#EF4444]/15 hover:bg-[#EF4444]/25 text-[#FF5A5A]" 
                                   : "bg-[#00D4FF]/15 hover:bg-[#00D4FF]/25 text-[#00D4FF]"
@@ -393,10 +393,10 @@ export default function Dashboard({
                             audioEngine.playClick();
                             onSelectBlock(b.id);
                           }}
-                          className={`py-1.5 rounded text-xs font-mono font-semibold tracking-wide border transition duration-155 ${
+                          className={`py-1.5 rounded text-xs font-mono font-semibold tracking-wide border transition duration-150 ${
                             isSel 
                               ? "bg-[#FFB300]/20 text-[#FFB300] border-[#FFB300]" 
-                              : "bg-slate-905 border-slate-800 text-slate-400 hover:text-white"
+                              : "bg-slate-950 border-slate-800 text-slate-400 hover:text-white"
                           }`}
                         >
                           BLK {b.id}
@@ -438,7 +438,7 @@ export default function Dashboard({
                       <button
                         onClick={onTriggerDrill}
                         disabled={isDrilling}
-                        className="w-full py-3 rounded-lg bg-gradient-to-r from-[#FF8F00] to-[#FF3D00] hover:from-[#FFA000] hover:to-[#FF5722] text-white font-mono font-bold tracking-widest text-xs flex items-center justify-center gap-2 shadow-lg cursor-pointer transition-all active:scale-98"
+                        className="w-full py-3 rounded-lg bg-gradient-to-r from-[#FF8F00] to-[#FF3D00] hover:from-[#FFA000] hover:to-[#FF5722] text-white font-mono font-bold tracking-widest text-xs flex items-center justify-center gap-2 shadow-lg cursor-pointer transition-all active:scale-[0.98]"
                       >
                         <Play className="w-4 h-4" /> ENGAGE EXCAVATION PROTOCOL
                       </button>

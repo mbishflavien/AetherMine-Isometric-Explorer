@@ -395,7 +395,7 @@ export default function MiningCanvas({
                 transform: "translateX(-50%)",
                 width: "4px"
               }}
-              className="absolute top-0 bottom-0 z-35 pointer-events-none"
+              className="absolute top-0 bottom-0 z-40 pointer-events-none"
             >
               {/* Outer Beam Glow */}
               <div className="absolute inset-0 bg-[#FFB300] blur-[4px] opacity-75" />
@@ -544,7 +544,7 @@ export default function MiningCanvas({
                     className="absolute left-[64%] top-[30%] pointer-events-none flex flex-col items-center justify-center"
                   >
                     <div className="h-5 w-5 rounded-full border border-dashed border-[#FFB300] animate-spin" />
-                    <span className="text-[8px] font-mono text-[#FFB300] bg-slate-950 px-1 rounded mt-0.5 border border-slate-805">
+                    <span className="text-[8px] font-mono text-[#FFB300] bg-slate-950 px-1 rounded mt-0.5 border border-slate-800">
                       DRILL_TARGET
                     </span>
                   </div>
@@ -603,7 +603,7 @@ export default function MiningCanvas({
         </div>
 
         {/* RIGHT CONTROL PANEL COLUMN: DIAGNOSTIC DATA & SPECS */}
-        <div className="w-full lg:w-76 xl:w-80 shrink-0 bg-[#0B0F19]/95 border-t lg:border-t-0 lg:border-l border-[#1F2937]/50 flex flex-col p-4 overflow-y-auto">
+        <div className="w-full lg:w-72 xl:w-80 shrink-0 bg-[#0B0F19]/95 border-t lg:border-t-0 lg:border-l border-[#1F2937]/50 flex flex-col p-4 overflow-y-auto">
           
           {/* Main Selection Details Section */}
           <div className="flex-1 space-y-4">
@@ -761,7 +761,7 @@ export default function MiningCanvas({
 
                   <button
                     onClick={() => { audioEngine.playClick(); setSelectedHotspot(null); }}
-                    className="w-full py-1.5 rounded bg-slate-905 border border-slate-800 text-[10px] font-mono text-slate-400 hover:text-white hover:border-slate-700 transition"
+                    className="w-full py-1.5 rounded bg-slate-950 border border-slate-800 text-[10px] font-mono text-slate-400 hover:text-white hover:border-slate-700 transition"
                   >
                     Clear Focus Targets
                   </button>
