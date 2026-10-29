@@ -119,7 +119,7 @@ export default function Dashboard({
     const matchesSearch = rec.id.toLowerCase().includes(searchText.toLowerCase()) || 
                           rec.chainHash.toLowerCase().includes(searchText.toLowerCase()) ||
                           rec.custodyParty.toLowerCase().includes(searchText.toLowerCase());
-    const matchesGrade = filterGrade === "ALL" || rec.grade === filterGrade;
+    const matchesGrade = filterGrade === "ALL" || rec.grade.startsWith(filterGrade);
     return matchesSearch && matchesGrade;
   });
 
