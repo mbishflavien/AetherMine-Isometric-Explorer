@@ -245,6 +245,23 @@ export default function App() {
     setIsDrilling(true);
   };
 
+  const closeHelpModal = () => {
+    audioEngine.playClick();
+    setShowHelpModal(false);
+  };
+
+  // Allow the diagnostics overlay to be dismissed with the keyboard.
+  useEffect(() => {
+    if (!showHelpModal) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setShowHelpModal(false);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [showHelpModal]);
+
   return (
     <div className="min-h-screen bg-[#07090E] text-slate-100 flex flex-col justify-between font-sans selection:bg-[#00D4FF]/30 selection:text-white">
       
@@ -342,15 +359,19 @@ export default function App() {
       {/* 🚀 DIAGNOSTICS & SYSTEM MANUAL MODAL */}
       <AnimatePresence>
         {showHelpModal && (
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowHelpModal(false)}
+          >
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(event) => event.stopPropagation()}
               className="bg-[#0D121F] border border-[#00D4FF]/40 rounded-xl p-5 md:p-6 max-w-2xl w-full text-slate-300 font-sans shadow-2xl relative"
             >
               <button 
-                onClick={() => { audioEngine.playClick(); setShowHelpModal(false); }}
+                onClick={closeHelpModal}
                 className="absolute top-4 right-4 text-slate-500 hover:text-white p-1"
               >
                 <X className="w-5 h-5" />
@@ -405,7 +426,7 @@ export default function App() {
 
               <div className="mt-6 flex justify-end">
                 <button
-                  onClick={() => { audioEngine.playClick(); setShowHelpModal(false); }}
+                  onClick={closeHelpModal}
                   className="bg-[#00D4FF]/15 hover:bg-[#00D4FF]/35 text-[#00D4FF] border border-[#00D4FF]/40 font-mono font-bold text-xs py-2 px-4 rounded transition duration-150"
                 >
                   Confirm Diagnostics & Close
