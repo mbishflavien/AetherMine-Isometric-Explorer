@@ -1,0 +1,33 @@
+import type { LedgerRecord } from "../types";
+
+const HASH_PREFIX = "0x";
+const HASH_LENGTH = 40;
+const MAX_ID_ATTEMPTS = 100;
+
+function randomHex(length: number): string {
+  if (typeof crypto !== "undefined" && typeof crypto.getRandomValues === "function") {
+    const bytes = new Uint8Array(Math.ceil(length / 2));
+    crypto.getRandomValues(bytes);
+    return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0"))
+      .join("")
+      .slice(0, length);
+  }
+  return Array.from({ length }, () => Math.floor(Math.random() * 16).toString(16)).join("");
+}
+
+export function randomChainHash(): string {
+  return HASH_PREFIX + randomHex(HASH_LENGTH);
+}
+
+export function formatUtcTimestamp(date: Date): string {
+  return date.toISOString().replace("T", " ").slice(0, 19) + " UTC";
+}
+
+export function nextLedgerId(existing: LedgerRecord[]): string {
+  const taken = new Set(existing.map((record) => record.id));
+  for (let attempt = 0; attempt < MAX_ID_ATTEMPTS; attempt += 1) {
+    const id = `TX-${randomHex(8).toUpperCase()}`;
+    if (!taken.has(id)) return id;
+  }
+  return `TX-${Date.now().toString(36).toUpperCase()}`;
+}

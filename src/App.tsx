@@ -11,6 +11,7 @@ import Dashboard from "./components/Dashboard";
 import DiagnosticsModal from "./components/DiagnosticsModal";
 import { audioEngine } from "./components/AudioEngine";
 import { useUtcClock } from "./hooks/useUtcClock";
+import { formatUtcTimestamp, nextLedgerId, randomChainHash } from "./lib/ledger";
 import {
   createInitialBlocks,
   createInitialLedgerRecords,
@@ -89,23 +90,18 @@ export default function App() {
     );
 
     const newRecord: LedgerRecord = {
-      id: `TX-${Math.floor(1000 + Math.random() * 9000)}`,
-      timestamp:
-        new Date().toISOString().replace("T", " ").substring(0, 19) + " UTC",
+      id: nextLedgerId(ledgerRecords),
+      timestamp: formatUtcTimestamp(new Date()),
       blockId: `Block ${selectedBlock.id} (${selectedBlock.lithology})`,
       grade: `${selectedBlock.grade} (Coltan: ${selectedBlock.mineralEst.coltan}%, Gold: ${selectedBlock.mineralEst.gold}%)`,
       tonnage: parseFloat((80 + Math.random() * 60).toFixed(1)),
       custodyParty: `Auto-Drone Carrier #${Math.floor(10 + Math.random() * 89)}`,
-      chainHash:
-        "0x" +
-        Array.from({ length: 40 }, () =>
-          Math.floor(Math.random() * 16).toString(16)
-        ).join(""),
+      chainHash: randomChainHash(),
     };
 
     setLedgerRecords((prev) => [newRecord, ...prev]);
     audioEngine.playTransaction();
-  }, [isDrilling, drillProgress, blocks, selectedBlockId]);
+  }, [isDrilling, drillProgress, blocks, selectedBlockId, ledgerRecords]);
 
   const handleTriggerDrill = () => {
     if (isDrilling) return;
