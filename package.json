@@ -1,14 +1,17 @@
 {
-  "name": "react-example",
+  "name": "aethermine-isometric-explorer",
   "private": true,
-  "version": "0.0.0",
+  "description": "Interactive isometric mining cross-section with live sensor telemetry, an ML planning dashboard, and a chain-of-custody ledger.",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
@@ -21,6 +24,9 @@
     "express": "^4.21.2",
     "dotenv": "^17.2.3",
     "motion": "^12.23.24"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
