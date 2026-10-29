@@ -45,6 +45,10 @@ interface MiningCanvasProps {
   ledgersCount: number;
 }
 
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 interface Hotspot {
   id: string;
   name: string;
@@ -68,7 +72,7 @@ export default function MiningCanvas({
   const [pitch, setPitch] = useState<number>(60); // 30 to 80 deg
   const [yaw, setYaw] = useState<number>(-45); // -180 to 180 deg
   const [roll, setRoll] = useState<number>(0); // -180 to 180
-  const [isOrbiting, setIsOrbiting] = useState<boolean>(true);
+  const [isOrbiting, setIsOrbiting] = useState<boolean>(() => !prefersReducedMotion());
   const [isMuted, setIsMuted] = useState<boolean>(true);
   
   // Tab/Focus settings
