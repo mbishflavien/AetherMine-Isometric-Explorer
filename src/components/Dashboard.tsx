@@ -130,9 +130,13 @@ export default function Dashboard({
       
       {/* Control Room / LEDGER tabs bar */}
       <div className="flex bg-[#0A0D14] border-b border-[#1F2937]/40 h-12 shrink-0 items-center justify-between px-3">
-        <div className="flex gap-2">
+        <div className="flex gap-2" role="tablist" aria-label="Dashboard views">
           <button
             onClick={() => { audioEngine.playClick(); setActiveTab("ML_PIPELINE"); }}
+            role="tab"
+            id="ml-pipeline-tab"
+            aria-selected={activeTab === "ML_PIPELINE"}
+            aria-controls="ml-pipeline-panel"
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold tracking-wider transition duration-150 flex items-center gap-2 ${
               activeTab === "ML_PIPELINE" 
                 ? "bg-[#00D4FF]/15 text-[#00D4FF] border border-[#00D4FF]/30" 
@@ -144,6 +148,10 @@ export default function Dashboard({
           
           <button
             onClick={() => { audioEngine.playClick(); setActiveTab("BLOCK_LEDGER"); }}
+            role="tab"
+            id="block-ledger-tab"
+            aria-selected={activeTab === "BLOCK_LEDGER"}
+            aria-controls="block-ledger-panel"
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold tracking-wider transition duration-150 flex items-center gap-2 ${
               activeTab === "BLOCK_LEDGER" 
                 ? "bg-[#5DDB50]/15 text-[#39FF14] border border-[#39FF14]/30" 
@@ -164,6 +172,9 @@ export default function Dashboard({
           {activeTab === "ML_PIPELINE" ? (
             <motion.div
               key="pipeline"
+              role="tabpanel"
+              id="ml-pipeline-panel"
+              aria-labelledby="ml-pipeline-tab"
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -5 }}
@@ -456,6 +467,9 @@ export default function Dashboard({
           ) : (
             <motion.div
               key="ledger"
+              role="tabpanel"
+              id="block-ledger-panel"
+              aria-labelledby="block-ledger-tab"
               initial={{ opacity: 0, y: 5 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -5 }}
