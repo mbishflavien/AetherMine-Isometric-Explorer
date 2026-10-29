@@ -36,6 +36,7 @@ interface DashboardProps {
   drillProgress: number;
   ledgerRecords: LedgerRecord[];
   onAddLedgerRecord: (record: LedgerRecord) => void;
+  onResetLedger: () => void;
 }
 
 export default function Dashboard({
@@ -49,6 +50,7 @@ export default function Dashboard({
   drillProgress,
   ledgerRecords,
   onAddLedgerRecord,
+  onResetLedger,
 }: DashboardProps) {
   const [activeTab, setActiveTab] = useState<"ML_PIPELINE" | "BLOCK_LEDGER">("ML_PIPELINE");
   const [searchText, setSearchText] = useState("");
@@ -472,7 +474,9 @@ export default function Dashboard({
                 <button
                   onClick={() => {
                     audioEngine.playSonarPing();
-                    window.location.reload();
+                    setSearchText("");
+                    setFilterGrade("ALL");
+                    onResetLedger();
                   }}
                   className="text-[10px] font-mono text-[#00D4FF] hover:underline flex items-center gap-1.5 self-start md:self-auto bg-slate-900 px-3 py-1.5 rounded border border-slate-800 shrink-0"
                 >

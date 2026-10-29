@@ -25,6 +25,29 @@ import MiningCanvas from "./components/MiningCanvas";
 import Dashboard from "./components/Dashboard";
 import { audioEngine } from "./components/AudioEngine";
 
+function createInitialLedgerRecords(): LedgerRecord[] {
+  return [
+    {
+      id: "TX-9042",
+      timestamp: "2026-06-04 15:30:24 UTC",
+      blockId: "Block C (Greenstone Base)",
+      grade: "HIGH (Coltan: 84%)",
+      tonnage: 122.4,
+      custodyParty: "Operator Beta (Haul Carrier T-700)",
+      chainHash: "0xc8a164b5e2df4bb8faf15dd8a463d1dbec2f9392",
+    },
+    {
+      id: "TX-8914",
+      timestamp: "2026-06-04 11:21:05 UTC",
+      blockId: "Block D (Iron Band Base)",
+      grade: "LOW (Gold: 64%)",
+      tonnage: 94.6,
+      custodyParty: "Operator Alpha (Manned Haul T-400A)",
+      chainHash: "0x3bc14ffa49a1d476fbb33d64fc5a932bc3df7c04",
+    },
+  ];
+}
+
 export default function App() {
   const [streams, setStreams] = useState<SensorStream[]>([
     {
@@ -129,26 +152,9 @@ export default function App() {
   const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
 
   // Blockchain Ledger for Chain of Custody logs
-  const [ledgerRecords, setLedgerRecords] = useState<LedgerRecord[]>([
-    {
-      id: "TX-9042",
-      timestamp: "2026-06-04 15:30:24 UTC",
-      blockId: "Block C (Greenstone Base)",
-      grade: "HIGH (Coltan: 84%)",
-      tonnage: 122.4,
-      custodyParty: "Operator Beta (Haul Carrier T-700)",
-      chainHash: "0xc8a164b5e2df4bb8faf15dd8a463d1dbec2f9392"
-    },
-    {
-      id: "TX-8914",
-      timestamp: "2026-06-04 11:21:05 UTC",
-      blockId: "Block D (Iron Band Base)",
-      grade: "LOW (Gold: 64%)",
-      tonnage: 94.6,
-      custodyParty: "Operator Alpha (Manned Haul T-400A)",
-      chainHash: "0x3bc14ffa49a1d476fbb33d64fc5a932bc3df7c04"
-    }
-  ]);
+  const [ledgerRecords, setLedgerRecords] = useState<LedgerRecord[]>(
+    createInitialLedgerRecords
+  );
 
   // Handle stream updates
   const handleUpdateStream = (id: string, updates: Partial<SensorStream>) => {
@@ -302,6 +308,7 @@ export default function App() {
             drillProgress={drillProgress}
             ledgerRecords={ledgerRecords}
             onAddLedgerRecord={(rec) => setLedgerRecords(prev => [rec, ...prev])}
+            onResetLedger={() => setLedgerRecords(createInitialLedgerRecords())}
           />
         </section>
 
