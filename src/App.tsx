@@ -24,6 +24,7 @@ import { SensorStream, MiningBlock, LedgerRecord } from "./types";
 import MiningCanvas from "./components/MiningCanvas";
 import Dashboard from "./components/Dashboard";
 import { audioEngine } from "./components/AudioEngine";
+import { useUtcClock } from "./hooks/useUtcClock";
 
 const DRILL_TICK_MS = 150;
 const DRILL_STEP = 0.05;
@@ -153,6 +154,7 @@ export default function App() {
   const [isDrilling, setIsDrilling] = useState<boolean>(false);
   const [drillProgress, setDrillProgress] = useState<number>(0.0);
   const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
+  const utcTime = useUtcClock();
   const helpDialogRef = useRef<HTMLDivElement | null>(null);
 
   // Blockchain Ledger for Chain of Custody logs
@@ -303,7 +305,7 @@ export default function App() {
           </div>
 
           <div className="text-[11px] font-mono text-slate-400 hidden sm:block bg-slate-900 border border-slate-800 p-1.5 px-2.5 rounded">
-            UTC CLAMP: <span className="text-[#FFB300]">16:45:30</span>
+            UTC CLAMP: <span className="text-[#FFB300]">{utcTime}</span>
           </div>
 
           <button
