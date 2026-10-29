@@ -461,6 +461,8 @@ export default function MiningCanvas({
                         <img
                           src={layer.imageUrl}
                           alt={layer.title}
+                          loading="lazy"
+                          decoding="async"
                           referrerPolicy="no-referrer"
                           className={`w-full h-full object-cover transition duration-300 pointer-events-none ${getLensColorFilter()} ${
                             isDrilling ? "contrast-115 grayscale-[15%]" : ""
