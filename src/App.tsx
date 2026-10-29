@@ -153,6 +153,7 @@ export default function App() {
   const [isDrilling, setIsDrilling] = useState<boolean>(false);
   const [drillProgress, setDrillProgress] = useState<number>(0.0);
   const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
+  const helpDialogRef = useRef<HTMLDivElement | null>(null);
 
   // Blockchain Ledger for Chain of Custody logs
   const [ledgerRecords, setLedgerRecords] = useState<LedgerRecord[]>(
@@ -262,6 +263,14 @@ export default function App() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [showHelpModal]);
 
+  // Move focus into the dialog while it is open and restore it on close.
+  useEffect(() => {
+    if (!showHelpModal) return;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    helpDialogRef.current?.focus();
+    return () => previouslyFocused?.focus();
+  }, [showHelpModal]);
+
   return (
     <div className="min-h-screen bg-[#07090E] text-slate-100 flex flex-col justify-between font-sans selection:bg-[#00D4FF]/30 selection:text-white">
       
@@ -368,18 +377,24 @@ export default function App() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(event) => event.stopPropagation()}
-              className="bg-[#0D121F] border border-[#00D4FF]/40 rounded-xl p-5 md:p-6 max-w-2xl w-full text-slate-300 font-sans shadow-2xl relative"
+              ref={helpDialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="diagnostics-title"
+              tabIndex={-1}
+              className="bg-[#0D121F] border border-[#00D4FF]/40 rounded-xl p-5 md:p-6 max-w-2xl w-full text-slate-300 font-sans shadow-2xl relative focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF]/70"
             >
               <button 
                 onClick={closeHelpModal}
-                className="absolute top-4 right-4 text-slate-500 hover:text-white p-1"
+                aria-label="Close diagnostics"
+                className="absolute top-4 right-4 text-slate-500 hover:text-white p-1 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00D4FF]"
               >
                 <X className="w-5 h-5" />
               </button>
 
               <div className="flex items-center gap-2 mb-4 border-b border-slate-800 pb-3">
                 <Info className="w-5 h-5 text-[#00D4FF]" />
-                <h2 className="text-base font-bold text-white font-mono uppercase tracking-wider">
+                <h2 id="diagnostics-title" className="text-base font-bold text-white font-mono uppercase tracking-wider">
                   Stratum-V Deep-Tech Diagnostic Manual
                 </h2>
               </div>
