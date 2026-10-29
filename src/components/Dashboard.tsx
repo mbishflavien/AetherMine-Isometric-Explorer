@@ -23,6 +23,11 @@ import {
 } from "lucide-react";
 import { SensorStream, MiningBlock, LedgerRecord } from "../types";
 import { audioEngine } from "./AudioEngine";
+import {
+  computeConfidenceScore,
+  gradeForConfidence,
+  gradeMatchesFilter,
+} from "../lib/geology";
 
 interface DashboardProps {
   streams: SensorStream[];
@@ -58,28 +63,10 @@ export default function Dashboard({
   const [epochsCount, setEpochsCount] = useState(150);
   const [weightsStatus, setWeightsStatus] = useState("STABLE");
 
-  // Calculate live pipeline metrics based on active stream counts and their strengths
-  const activeStreams = streams.filter((s) => s.status === "ACTIVE");
-  const activeCount = activeStreams.length;
-  
-  // Calculate a simulated confidence rating
-  const baseConfidence = activeCount * 18; // up to 90%
-  const strengthBonus = activeStreams.reduce((acc, curr) => acc + curr.signalStrength, 0) / (activeCount || 1) * 0.1; // up to 10%
-  const confidenceScore = Math.min(Math.max(Math.round(baseConfidence + strengthBonus), 12), 99);
-
-  // Determine predicted mineral grade
-  let mineralGrade: "HIGH" | "MEDIUM" | "LOW" | "TRACE" | "EMPTY" = "LOW";
-  if (confidenceScore > 85) {
-    mineralGrade = "HIGH";
-  } else if (confidenceScore > 60) {
-    mineralGrade = "MEDIUM";
-  } else if (confidenceScore > 35) {
-    mineralGrade = "LOW";
-  } else if (confidenceScore > 15) {
-    mineralGrade = "TRACE";
-  } else {
-    mineralGrade = "EMPTY";
-  }
+  // Live pipeline metrics derived from the active sensor bands
+  const activeCount = streams.filter((s) => s.status === "ACTIVE").length;
+  const confidenceScore = computeConfidenceScore(streams);
+  const mineralGrade = gradeForConfidence(confidenceScore);
 
   // Get active block stats
   const activeBlock = blocks.find((b) => b.id === selectedBlockId);
@@ -120,7 +107,7 @@ export default function Dashboard({
     const matchesSearch = rec.id.toLowerCase().includes(searchText.toLowerCase()) || 
                           rec.chainHash.toLowerCase().includes(searchText.toLowerCase()) ||
                           rec.custodyParty.toLowerCase().includes(searchText.toLowerCase());
-    const matchesGrade = filterGrade === "ALL" || rec.grade.startsWith(filterGrade);
+    const matchesGrade = gradeMatchesFilter(rec.grade, filterGrade);
     return matchesSearch && matchesGrade;
   });
 
