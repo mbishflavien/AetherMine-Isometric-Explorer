@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AetherMine">
+  <rect width="64" height="64" rx="14" fill="#07090E" />
+  <path d="M32 8 44 32 32 56 20 32Z" fill="none" stroke="#00D4FF" stroke-width="3" stroke-linejoin="round" />
+  <path d="M32 18 38 32 32 46 26 32Z" fill="#BF00FF" opacity="0.85" />
+</svg>
