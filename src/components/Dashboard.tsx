@@ -217,6 +217,7 @@ export default function Dashboard({
                             </span>
                             <button
                               onClick={() => handleStreamToggle(stream.id, stream.status)}
+                              aria-pressed={isActive}
                               className={`text-[10px] font-mono font-bold px-2.5 py-1 rounded transition duration-150 ${
                                 isActive 
                                   ? "bg-[#EF4444]/15 hover:bg-[#EF4444]/25 text-[#FF5A5A]" 
@@ -237,6 +238,7 @@ export default function Dashboard({
                               max="100"
                               value={stream.signalStrength}
                               onChange={(e) => handleStrengthChange(stream.id, parseInt(e.target.value))}
+                              aria-label={`Signal density for ${stream.name}`}
                               className="w-full h-1.5 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-[#00D4FF]"
                             />
                             <span className="text-[#00D4FF] font-bold w-12 text-right">
@@ -491,6 +493,7 @@ export default function Dashboard({
                   <input
                     type="text"
                     placeholder="Search by block ID, hash signature, or custody party..."
+                    aria-label="Search ledger records"
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
                     className="w-full bg-slate-950 border border-slate-800 rounded-md py-1.5 pl-9 pr-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#00D4FF]"
@@ -503,6 +506,7 @@ export default function Dashboard({
                   <select
                     value={filterGrade}
                     onChange={(e) => setFilterGrade(e.target.value)}
+                    aria-label="Filter ledger by grade"
                     className="bg-slate-950 border border-slate-800 text-xs text-white rounded-md py-1.5 px-3 focus:outline-none"
                   >
                     <option value="ALL">All Grades</option>

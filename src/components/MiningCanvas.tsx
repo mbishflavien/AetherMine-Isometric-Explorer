@@ -444,10 +444,12 @@ export default function MiningCanvas({
                   const zTranslate = layer.index * explosionFactor * 52;
                   
                   return (
-                    <div
+                    <button
+                      type="button"
                       key={layer.id}
                       onClick={() => handleSelectLayer(layer.id)}
-                      className="absolute inset-0 bg-slate-900/60 rounded-lg border border-slate-700/60 hover:border-[#00D4FF]/80 hover:bg-slate-900/90 hover:shadow-2xl hover:shadow-[#00D4FF]/10 cursor-pointer transition-all duration-300 group"
+                      aria-label={`Focus layer ${layer.id}: ${layer.title}`}
+                      className="absolute inset-0 bg-slate-900/60 rounded-lg border border-slate-700/60 hover:border-[#00D4FF]/80 hover:bg-slate-900/90 hover:shadow-2xl hover:shadow-[#00D4FF]/10 cursor-pointer transition-all duration-300 group text-left"
                       style={{
                         transform: `translateZ(${zTranslate}px)`,
                         transformStyle: "preserve-3d",
@@ -485,7 +487,7 @@ export default function MiningCanvas({
                       {/* Sparkle corner decorations */}
                       <span className="absolute top-1 left-1 block h-1 w-1 bg-[#00D4FF] rounded-full opacity-60" />
                       <span className="absolute bottom-1 right-1 block h-1 w-1 bg-[#BF00FF] rounded-full opacity-60" />
-                    </div>
+                    </button>
                   );
                 })}
               </div>
@@ -512,6 +514,7 @@ export default function MiningCanvas({
                   <button
                     key={lns}
                     onClick={() => { audioEngine.playClick(); setActiveLens(lns); }}
+                    aria-pressed={activeLens === lns}
                     className={`text-[8px] font-mono font-bold px-1.5 py-0.5 rounded transition ${
                       activeLens === lns 
                         ? "bg-[#00D4FF]/15 text-[#00D4FF] border border-[#00D4FF]/30" 
@@ -563,6 +566,7 @@ export default function MiningCanvas({
                       }}
                       className="absolute -translate-x-1/2 -translate-y-1/2 z-30 group cursor-pointer"
                       title={`Click parameters for: ${hs.name}`}
+                      aria-label={`Inspect ${hs.name}`}
                     >
                       {/* Pulse rings */}
                       <span className="absolute inline-flex h-8 w-8 -left-2.5 -top-2.5 rounded-full bg-[#00D4FF]/20 animate-ping" />
