@@ -29,6 +29,11 @@ import {
 } from "lucide-react";
 import { SensorStream, MiningBlock } from "../types";
 import { audioEngine } from "./AudioEngine";
+import deepLayerImage from "../assets/images/deep_layer_1780592859219.png";
+import mlPipelineImage from "../assets/images/ml_pipeline_1780592873835.png";
+import shallowLayerImage from "../assets/images/shallow_layer_1780592847776.png";
+import skyLayerImage from "../assets/images/sky_layer_1780592814628.png";
+import surfaceLayerImage from "../assets/images/surface_layer_1780592833090.png";
 
 interface MiningCanvasProps {
   streams: SensorStream[];
@@ -79,7 +84,7 @@ export default function MiningCanvas({
       index: 4,
       title: "Sky Spectrometry Layer",
       subtitle: "Airborne remote geophysical scan",
-      imageUrl: "/src/assets/images/sky_layer_1780592814628.png",
+      imageUrl: skyLayerImage,
       color: "#00D4FF",
       depthLabel: "Altitude: 60m AGL",
       radarTitle: "LIDAR & MAGNETOMETRICS",
@@ -117,7 +122,7 @@ export default function MiningCanvas({
       index: 3,
       title: "Contour-Property Surface Layer",
       subtitle: "GIS contour grids & hauling systems",
-      imageUrl: "/src/assets/images/surface_layer_1780592833090.png",
+      imageUrl: surfaceLayerImage,
       color: "#FFB300",
       depthLabel: "Altitude: 0m (Surface)",
       radarTitle: "GIS TOPOGRAPHIC PLATE",
@@ -155,7 +160,7 @@ export default function MiningCanvas({
       index: 2,
       title: "Shallow Strata Layer (<10m)",
       subtitle: "Lode veins & GPR profiles",
-      imageUrl: "/src/assets/images/shallow_layer_1780592847776.png",
+      imageUrl: shallowLayerImage,
       color: "#39FF14",
       depthLabel: "Depth: 0m to 10m",
       radarTitle: "GPR STRATA PROFILER",
@@ -193,7 +198,7 @@ export default function MiningCanvas({
       index: 1,
       title: "Deep Subsurface Layer (<50m)",
       subtitle: "Bedrock fractures & EM anomalies",
-      imageUrl: "/src/assets/images/deep_layer_1780592859219.png",
+      imageUrl: deepLayerImage,
       color: "#BF00FF",
       depthLabel: "Depth: 10m to 50m",
       radarTitle: "EM-MAGNETIC DEPTHS",
@@ -231,7 +236,7 @@ export default function MiningCanvas({
       index: 0,
       title: "PyTorch ML Core Layer",
       subtitle: "Neural data convergence system",
-      imageUrl: "/src/assets/images/ml_pipeline_1780592873835.png",
+      imageUrl: mlPipelineImage,
       color: "#FF3D00",
       depthLabel: "Core Processing Server",
       radarTitle: "AI TELEMETRY CONVERGENCE",
