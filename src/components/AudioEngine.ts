@@ -3,9 +3,31 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+const MUTED_STORAGE_KEY = "aethermine:sound-muted";
+
+function readMutedPreference(): boolean {
+  if (typeof window === "undefined") return true;
+  try {
+    const stored = window.localStorage.getItem(MUTED_STORAGE_KEY);
+    return stored === null ? true : stored === "true";
+  } catch {
+    return true;
+  }
+}
+
+function writeMutedPreference(muted: boolean) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(MUTED_STORAGE_KEY, String(muted));
+  } catch {
+    // Storage can be unavailable (private mode); the in-memory preference still works.
+  }
+}
+
 class AudioEngine {
   private ctx: AudioContext | null = null;
-  public muted: boolean = true;
+  public muted: boolean = readMutedPreference();
+  private listeners = new Set<(muted: boolean) => void>();
 
   private initCtx() {
     if (!this.ctx && typeof window !== "undefined") {
@@ -22,10 +44,25 @@ class AudioEngine {
   }
 
   public setMute(muted: boolean) {
+    if (this.muted === muted) return;
     this.muted = muted;
+    writeMutedPreference(muted);
+    this.listeners.forEach((listener) => listener(muted));
     if (!muted) {
       this.initCtx();
     }
+  }
+
+  public toggleMute(): boolean {
+    this.setMute(!this.muted);
+    return this.muted;
+  }
+
+  public subscribe(listener: (muted: boolean) => void): () => void {
+    this.listeners.add(listener);
+    return () => {
+      this.listeners.delete(listener);
+    };
   }
 
   public playClick() {

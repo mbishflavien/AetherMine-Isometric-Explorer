@@ -73,7 +73,7 @@ export default function MiningCanvas({
   const [yaw, setYaw] = useState<number>(-45); // -180 to 180 deg
   const [roll, setRoll] = useState<number>(0); // -180 to 180
   const [isOrbiting, setIsOrbiting] = useState<boolean>(() => !prefersReducedMotion());
-  const [isMuted, setIsMuted] = useState<boolean>(true);
+  const [isMuted, setIsMuted] = useState<boolean>(audioEngine.muted);
   
   // Tab/Focus settings
   const [activeLayerId, setActiveLayerId] = useState<string | null>(null); // null = stacked, otherwise single-view active
@@ -299,10 +299,11 @@ export default function MiningCanvas({
     return () => window.cancelAnimationFrame(frameId);
   }, [isOrbiting, activeLayerId]);
 
+  // Keep the local mute indicator in sync with every other audio control.
+  useEffect(() => audioEngine.subscribe(setIsMuted), []);
+
   const handleMuteToggle = () => {
-    const nextMute = !isMuted;
-    setIsMuted(nextMute);
-    audioEngine.setMute(nextMute);
+    audioEngine.toggleMute();
     audioEngine.playClick();
   };
 
