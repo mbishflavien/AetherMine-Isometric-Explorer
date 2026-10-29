@@ -25,6 +25,9 @@ import MiningCanvas from "./components/MiningCanvas";
 import Dashboard from "./components/Dashboard";
 import { audioEngine } from "./components/AudioEngine";
 
+const DRILL_TICK_MS = 150;
+const DRILL_STEP = 0.05;
+
 function createInitialLedgerRecords(): LedgerRecord[] {
   return [
     {
@@ -164,61 +167,68 @@ export default function App() {
   };
 
   const drillAudioRef = useRef<{ stop: () => void } | null>(null);
+  const drillCompletionGuard = useRef(false);
 
-  // Active drilling ticking interval sequence simulated inside standard browser frame cycle
-  useEffect(() => {
-    let timerId: any;
-    if (isDrilling) {
-      timerId = setInterval(() => {
-        setDrillProgress((prevProgress) => {
-          if (prevProgress >= 1.0) {
-            clearInterval(timerId);
-            setIsDrilling(false);
-            
-            // Stop drilling sound safely
-            if (drillAudioRef.current) {
-              drillAudioRef.current.stop();
-              drillAudioRef.current = null;
-            }
-
-            // Create new Immutable Ledger blockchain entry upon completed physical core scanning
-            const selectedBlock = blocks.find((b) => b.id === selectedBlockId);
-            if (selectedBlock) {
-              // Mark Block as fully explored
-              setBlocks(prevBlocks =>
-                prevBlocks.map(b => b.id === selectedBlockId ? { ...b, drillStatus: "MAPPED" } : b)
-              );
-
-              // Generate fake SHA-256 hex hash
-              const randomHexHash = "0x" + Array.from({ length: 40 }, () => 
-                Math.floor(Math.random() * 16).toString(16)
-              ).join("");
-
-              const newRecord: LedgerRecord = {
-                id: `TX-${Math.floor(1000 + Math.random() * 9000)}`,
-                timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19) + " UTC",
-                blockId: `Block ${selectedBlock.id} (${selectedBlock.lithology})`,
-                grade: `${selectedBlock.grade} (Coltan: ${selectedBlock.mineralEst.coltan}%, Gold: ${selectedBlock.mineralEst.gold}%)`,
-                tonnage: parseFloat((80 + Math.random() * 60).toFixed(1)),
-                custodyParty: `Auto-Drone Carrier #${Math.floor(10 + Math.random() * 89)}`,
-                chainHash: randomHexHash
-              };
-
-              setLedgerRecords(prev => [newRecord, ...prev]);
-              audioEngine.playTransaction();
-            }
-
-            return 0.0;
-          }
-          return prevProgress + 0.05; // 20 steps over 3 seconds aprox
-        });
-      }, 150);
+  const stopDrillAudio = () => {
+    if (drillAudioRef.current) {
+      drillAudioRef.current.stop();
+      drillAudioRef.current = null;
     }
+  };
 
-    return () => {
-      if (timerId) clearInterval(timerId);
+  // Advance the drill on a fixed cadence; the updater stays a pure function of progress.
+  useEffect(() => {
+    if (!isDrilling) return;
+    const timerId = window.setInterval(() => {
+      setDrillProgress((prevProgress) => Math.min(prevProgress + DRILL_STEP, 1));
+    }, DRILL_TICK_MS);
+    return () => window.clearInterval(timerId);
+  }, [isDrilling]);
+
+  // Reset the completion guard whenever a new drilling run starts.
+  useEffect(() => {
+    if (isDrilling) {
+      drillCompletionGuard.current = false;
+    } else {
+      stopDrillAudio();
+    }
+  }, [isDrilling]);
+
+  // Finalize a completed drill exactly once: rewrite the block status and append the ledger entry.
+  useEffect(() => {
+    if (!isDrilling || drillProgress < 1 || drillCompletionGuard.current) return;
+    drillCompletionGuard.current = true;
+
+    setIsDrilling(false);
+    stopDrillAudio();
+
+    const selectedBlock = blocks.find((b) => b.id === selectedBlockId);
+    if (!selectedBlock) return;
+
+    setBlocks((prevBlocks) =>
+      prevBlocks.map((b) =>
+        b.id === selectedBlockId ? { ...b, drillStatus: "MAPPED" } : b
+      )
+    );
+
+    const newRecord: LedgerRecord = {
+      id: `TX-${Math.floor(1000 + Math.random() * 9000)}`,
+      timestamp:
+        new Date().toISOString().replace("T", " ").substring(0, 19) + " UTC",
+      blockId: `Block ${selectedBlock.id} (${selectedBlock.lithology})`,
+      grade: `${selectedBlock.grade} (Coltan: ${selectedBlock.mineralEst.coltan}%, Gold: ${selectedBlock.mineralEst.gold}%)`,
+      tonnage: parseFloat((80 + Math.random() * 60).toFixed(1)),
+      custodyParty: `Auto-Drone Carrier #${Math.floor(10 + Math.random() * 89)}`,
+      chainHash:
+        "0x" +
+        Array.from({ length: 40 }, () =>
+          Math.floor(Math.random() * 16).toString(16)
+        ).join(""),
     };
-  }, [isDrilling, selectedBlockId, blocks]);
+
+    setLedgerRecords((prev) => [newRecord, ...prev]);
+    audioEngine.playTransaction();
+  }, [isDrilling, drillProgress, blocks, selectedBlockId]);
 
   const handleTriggerDrill = () => {
     if (isDrilling) return;
