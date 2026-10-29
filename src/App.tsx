@@ -18,7 +18,9 @@ import {
   Zap,
   CheckCircle,
   Database,
-  ArrowUpRight
+  ArrowUpRight,
+  Volume2,
+  VolumeX
 } from "lucide-react";
 import { SensorStream, MiningBlock, LedgerRecord } from "./types";
 import MiningCanvas from "./components/MiningCanvas";
@@ -156,6 +158,7 @@ export default function App() {
   const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
   const utcTime = useUtcClock();
   const helpDialogRef = useRef<HTMLDivElement | null>(null);
+  const [isMuted, setIsMuted] = useState(audioEngine.muted);
 
   // Blockchain Ledger for Chain of Custody logs
   const [ledgerRecords, setLedgerRecords] = useState<LedgerRecord[]>(
@@ -253,6 +256,13 @@ export default function App() {
     setShowHelpModal(false);
   };
 
+  useEffect(() => audioEngine.subscribe(setIsMuted), []);
+
+  const handleSoundToggle = () => {
+    audioEngine.toggleMute();
+    audioEngine.playClick();
+  };
+
   // Allow the diagnostics overlay to be dismissed with the keyboard.
   useEffect(() => {
     if (!showHelpModal) return;
@@ -307,6 +317,16 @@ export default function App() {
           <div className="text-[11px] font-mono text-slate-400 hidden sm:block bg-slate-900 border border-slate-800 p-1.5 px-2.5 rounded">
             UTC CLAMP: <span className="text-[#FFB300]">{utcTime}</span>
           </div>
+
+          <button
+            onClick={handleSoundToggle}
+            aria-label={isMuted ? "Enable sound" : "Mute sound"}
+            aria-pressed={!isMuted}
+            title={isMuted ? "Enable sound" : "Mute sound"}
+            className="p-1.5 rounded-lg border border-[#1F2937] bg-[#121825] hover:bg-[#1A253A] text-slate-400 hover:text-[#00D4FF] transition duration-150"
+          >
+            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+          </button>
 
           <button
             onClick={() => { audioEngine.playClick(); setShowHelpModal(true); }}
