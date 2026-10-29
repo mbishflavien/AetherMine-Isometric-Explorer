@@ -31,15 +31,24 @@ class AudioEngine {
 
   private initCtx() {
     if (!this.ctx && typeof window !== "undefined") {
+      const AudioCtx =
+        window.AudioContext ??
+        (window as Window & { webkitAudioContext?: typeof AudioContext })
+          .webkitAudioContext;
+      if (!AudioCtx) {
+        console.warn("Web Audio API not supported");
+        return;
+      }
       try {
-        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
         this.ctx = new AudioCtx();
-      } catch (e) {
-        console.warn("Web Audio API not supported", e);
+      } catch (error) {
+        console.warn("Web Audio API not supported", error);
       }
     }
     if (this.ctx && this.ctx.state === "suspended") {
-      this.ctx.resume();
+      void this.ctx.resume().catch((error) => {
+        console.warn("Unable to resume the audio context", error);
+      });
     }
   }
 
@@ -212,7 +221,9 @@ class AudioEngine {
             lfo.stop();
             osc1.stop();
             osc2.stop();
-          } catch(err) {}
+          } catch (error) {
+            console.warn("Unable to stop the drill oscillators", error);
+          }
         }, 500);
       }
     };
