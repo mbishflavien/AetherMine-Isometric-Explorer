@@ -74,7 +74,6 @@ export default function MiningCanvas({
   // Tab/Focus settings
   const [activeLayerId, setActiveLayerId] = useState<string | null>(null); // null = stacked, otherwise single-view active
   const [selectedHotspot, setSelectedHotspot] = useState<Hotspot | null>(null);
-  const [scanFlicker, setScanFlicker] = useState<number>(0);
   const [activeLens, setActiveLens] = useState<"NORMAL" | "RADIOMETRIC" | "GPR_GRID" | "THERMAL">("NORMAL");
 
   // Define layers matching the realistic generated illustrations
@@ -296,14 +295,6 @@ export default function MiningCanvas({
     return () => window.cancelAnimationFrame(frameId);
   }, [isOrbiting, activeLayerId]);
 
-  // Periodic sensor flicker mapping
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setScanFlicker((prev) => (prev + 1) % 100);
-    }, 150);
-    return () => clearInterval(interval);
-  }, []);
-
   const handleMuteToggle = () => {
     const nextMute = !isMuted;
     setIsMuted(nextMute);
@@ -321,6 +312,14 @@ export default function MiningCanvas({
     e.stopPropagation();
     audioEngine.playLaserSweep();
     setSelectedHotspot(hs);
+  };
+
+  const lastSliderClickRef = useRef(0);
+  const playSliderClick = () => {
+    const now = performance.now();
+    if (now - lastSliderClickRef.current < 120) return;
+    lastSliderClickRef.current = now;
+    audioEngine.playClick();
   };
 
   // Get active selected layer metadata
@@ -436,16 +435,14 @@ export default function MiningCanvas({
                 }}
               >
                 {/* Visual Inter-layer electromagnetic scanner beam projection when normal */}
-                {scanFlicker % 20 < 4 && (
-                  <div 
-                    className="absolute inset-x-0 bg-gradient-to-t from-[#00D4FF]/0 via-[#00D4FF]/12 to-[#BF00FF]/0 border-y border-[#00D4FF]/30 pointer-events-none"
-                    style={{
-                      height: "100%",
-                      transform: "translateZ(100px)",
-                      transformStyle: "preserve-3d"
-                    }}
-                  />
-                )}
+                <div
+                  className="animate-scanner-beam absolute inset-x-0 bg-gradient-to-t from-[#00D4FF]/0 via-[#00D4FF]/12 to-[#BF00FF]/0 border-y border-[#00D4FF]/30 pointer-events-none"
+                  style={{
+                    height: "100%",
+                    transform: "translateZ(100px)",
+                    transformStyle: "preserve-3d"
+                  }}
+                />
 
                 {/* Stacking actual individual layers inside the Exploded Layer-cake columns */}
                 {layers.slice().reverse().map((layer) => {
@@ -480,12 +477,7 @@ export default function MiningCanvas({
                         <div className="absolute inset-0 bg-black/15 group-hover:bg-transparent transition duration-200" />
                         
                         {/* Dynamic Sweep Grid Laser Bar Overlay */}
-                        <div 
-                          className="absolute inset-x-0 h-0.5 bg-[#39FF14] shadow-md shadow-[#39FF14]"
-                          style={{
-                            top: `${(scanFlicker * 1.5) % 100}%`
-                          }}
-                        />
+                        <div className="animate-scan-sweep absolute inset-x-0 h-0.5 bg-[#39FF14] shadow-md shadow-[#39FF14]" />
                       </div>
 
                       {/* Small Neon Border and text callouts */}
@@ -546,10 +538,7 @@ export default function MiningCanvas({
                 />
 
                 {/* Grid Scan sweep bar overlay */}
-                <div 
-                  className="absolute inset-x-0 h-[2px] bg-sky-400 shadow-md shadow-sky-500"
-                  style={{ top: `${(scanFlicker * 1.5) % 100}%` }}
-                />
+                <div className="animate-scan-sweep absolute inset-x-0 h-[2px] bg-sky-400 shadow-md shadow-sky-500" />
 
                 {/* Subsurface drill location crosshairs if zoomed layer is shallow/surface */}
                 {(currentLayer?.id === "shallow" || currentLayer?.id === "surface") && (
@@ -650,7 +639,7 @@ export default function MiningCanvas({
                     onChange={(e) => {
                       const val = parseFloat(e.target.value);
                       setExplosionFactor(val);
-                      if (scanFlicker % 4 === 0) audioEngine.playClick();
+                      playSliderClick();
                     }}
                     className="w-full h-1 bg-slate-800 rounded appearance-none cursor-pointer accent-[#00D4FF]"
                   />

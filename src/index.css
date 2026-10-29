@@ -42,3 +42,22 @@ input[type="range"]::-webkit-slider-thumb {
 ::-webkit-scrollbar-thumb:hover {
   background: #374151;
 }
+
+/* Scan sweep effects: run on the compositor instead of through React state */
+@keyframes scan-sweep {
+  from { top: 0%; }
+  to { top: 100%; }
+}
+
+.animate-scan-sweep {
+  animation: scan-sweep 9s linear infinite;
+}
+
+@keyframes scanner-beam {
+  0%, 80% { opacity: 0; }
+  81%, 100% { opacity: 1; }
+}
+
+.animate-scanner-beam {
+  animation: scanner-beam 3s linear infinite;
+}
