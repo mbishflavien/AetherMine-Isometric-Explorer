@@ -273,19 +273,27 @@ export default function MiningCanvas({
 
   // Auto-Orbit controller effect
   useEffect(() => {
-    let animationId: any;
-    if (isOrbiting && !activeLayerId) {
-      animationId = setInterval(() => {
+    if (!isOrbiting || activeLayerId) return;
+
+    const ORBIT_TICK_MS = 30;
+    const ORBIT_STEP_DEG = 0.15;
+    let frameId = 0;
+    let lastTick = performance.now();
+
+    const step = (now: number) => {
+      if (now - lastTick >= ORBIT_TICK_MS) {
+        lastTick = now;
         setYaw((prev) => {
-          let next = prev + 0.15;
-          if (next > 180) next = -180;
+          let next = prev + ORBIT_STEP_DEG;
+          if (next > 180) next -= 360;
           return next;
         });
-      }, 30);
-    }
-    return () => {
-      if (animationId) clearInterval(animationId);
+      }
+      frameId = window.requestAnimationFrame(step);
     };
+
+    frameId = window.requestAnimationFrame(step);
+    return () => window.cancelAnimationFrame(frameId);
   }, [isOrbiting, activeLayerId]);
 
   // Periodic sensor flicker mapping
