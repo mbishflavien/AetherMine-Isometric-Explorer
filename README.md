@@ -1,32 +1,96 @@
 # AetherMine Isometric Explorer
 
-An interactive isometric "layer-cake" cross-section of a high-tech mine site.
-Explore the geology layer by layer in a cyber-noir visual style, with ground-penetrating
-radar (GPR) grids, a live dashboard and machine-learning-assisted mine planning.
+An interactive isometric "layer-cake" cross-section of a high-tech mine site. Explore the
+geology layer by layer in a cyber-noir visual style, with ground-penetrating radar (GPR)
+grids, a live dashboard, machine-learning-assisted mine planning, and a verifiable
+chain-of-custody ledger.
 
 ## Features
 
-- Isometric canvas rendering of the mine cross-section (`MiningCanvas`)
-- Dashboard with site readouts (`Dashboard`)
-- Generative ambient audio (`AudioEngine`)
+- **Exploded 3D strata** — five survey layers stacked in CSS 3D, with adjustable exploded
+  distance, yaw, pitch, and a frame-synced auto-orbit.
+- **Focus inspection** — click any layer to zoom into a labelled cross-section with
+  radiometric, GPR, and thermal lens filters plus interactive hotspots.
+- **Sensor telemetry** — five spectra bands (LiDAR, hyperspectral, gamma-ray, GPR,
+  EM-mag) that can be toggled and detuned; confidence and grade estimates update live.
+- **Excavation protocol** — drill a target block, watch the progress telemetry, and get a
+  new signed ledger receipt appended to the chain of custody.
+- **Ledger tooling** — search by ID, hash, or custody party, filter by grade, and reset to
+  the genesis state without reloading the page.
+- **Sound** — synthesized click, sonar, laser, drill, and transaction cues with a mute
+  preference that survives page loads.
+- **Accessibility** — labelled controls, dialog semantics, keyboard dismissal, focus
+  handling, and `prefers-reduced-motion` support.
 
 ## Getting started
 
 ```bash
 npm install
-cp .env.example .env    # optional
-npm run dev             # http://localhost:3000
+npm run dev   # http://localhost:3000
 ```
 
-| Variable | Used for |
-|---|---|
-| `GEMINI_API_KEY` | Reserved for Gemini features (not used yet) |
-| `APP_URL` | Public URL of the app when deployed |
-
-## Tech stack
-
-React, TypeScript, Vite, Tailwind CSS, Motion.
+Requires Node.js 20 or newer.
 
 ## Scripts
 
-`npm run dev` · `npm run build` · `npm run preview` · `npm run lint`
+| Script | Description |
+|---|---|
+| `npm run dev` | Start the Vite dev server on port 3000 |
+| `npm run build` | Build the production bundle into `dist/` |
+| `npm run preview` | Serve the production build locally |
+| `npm run lint` / `npm run typecheck` | Run the TypeScript compiler without emitting |
+| `npm test` | Run the Vitest suite once |
+| `npm run test:watch` | Run Vitest in watch mode |
+| `npm run clean` | Remove `dist/` and stale server bundles |
+
+## Architecture
+
+```
+src/
+  App.tsx                 app shell, drill state machine, ledger state
+  main.tsx                React root + error boundary
+  types.ts                shared domain types
+  data/seed.ts            initial streams, blocks, and ledger receipts
+  lib/
+    geology.ts            confidence score and grade rules
+    ledger.ts             receipt ids, chain hashes, UTC timestamps
+    *.test.ts             unit tests for the above
+  hooks/useUtcClock.ts    one-second UTC clock
+  components/
+    MiningCanvas.tsx      isometric stack, focus view, 3D controls
+    Dashboard.tsx         sensor console, ML metrics, ledger tab
+    DiagnosticsModal.tsx  in-app manual and keyboard handling
+    AudioEngine.ts        Web Audio synthesizer singleton
+    ErrorBoundary.tsx     render-failure fallback
+```
+
+## Testing
+
+The pure logic lives in `src/lib` so it can be tested without a DOM:
+
+```bash
+npm test
+```
+
+CI runs the type checker, the tests, and a production build on every push to `main` and
+every pull request.
+
+## Environment
+
+| Variable | Used for |
+|---|---|
+| `GEMINI_API_KEY` | Reserved for future Gemini features (unused today) |
+| `APP_URL` | Public URL of the app when deployed |
+| `DISABLE_HMR` | Set to `true` to disable HMR and file watching |
+
+Both are optional for local development; see `.env.example`.
+
+## Deployment
+
+`npm run build` emits a static bundle in `dist/` that can be served by any static host.
+Layer textures are imported through Vite, so the production build fingerprints and
+serves them correctly.
+
+## License
+
+Apache-2.0. See [LICENSE](LICENSE).
