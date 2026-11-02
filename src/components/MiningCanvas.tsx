@@ -438,6 +438,7 @@ export default function MiningCanvas({
                     min="0.30"
                     max="2.10"
                     step="0.05"
+                    aria-label="Vertical explode distance"
                     value={explosionFactor}
                     onChange={(e) => {
                       const val = parseFloat(e.target.value);
@@ -459,6 +460,7 @@ export default function MiningCanvas({
                     min="-180"
                     max="180"
                     step="1"
+                    aria-label="3D stack yaw angle"
                     value={yaw}
                     disabled={isOrbiting}
                     onChange={(e) => {
@@ -479,6 +481,7 @@ export default function MiningCanvas({
                     min="20"
                     max="85"
                     step="1"
+                    aria-label="3D stack pitch angle"
                     value={pitch}
                     onChange={(e) => {
                       setPitch(parseInt(e.target.value));
