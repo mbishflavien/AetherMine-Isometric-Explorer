@@ -28,6 +28,7 @@ import {
   gradeForConfidence,
   gradeMatchesFilter,
 } from "../lib/geology";
+import { drillDepthMeters, formatDrillPercent } from "../lib/drill";
 
 interface DashboardProps {
   streams: SensorStream[];
@@ -425,7 +426,7 @@ export default function Dashboard({
                       <div className="flex flex-col gap-1.5">
                         <div className="flex justify-between text-[10px] font-mono text-[#FF3D00] font-bold">
                           <span>DRILL PROBING SEQUENCE ACTIVE...</span>
-                          <span>{(drillProgress * 100).toFixed(0)}%</span>
+                          <span>{formatDrillPercent(drillProgress)}</span>
                         </div>
                         <div className="w-full h-2 bg-slate-950 rounded-full overflow-hidden">
                           <motion.div
@@ -435,7 +436,7 @@ export default function Dashboard({
                           />
                         </div>
                         <p className="text-[9px] text-[#FF5A5A] font-mono">
-                          Transmitting core telemetry from {(drillProgress * 50).toFixed(1)}m subsurface to PyTorch Classifier.
+                          Transmitting core telemetry from {drillDepthMeters(drillProgress).toFixed(1)}m subsurface to PyTorch Classifier.
                         </p>
                       </div>
                     ) : (

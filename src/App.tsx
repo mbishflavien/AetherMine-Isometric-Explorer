@@ -18,8 +18,7 @@ import {
   createInitialStreams,
 } from "./data/seed";
 
-const DRILL_TICK_MS = 150;
-const DRILL_STEP = 0.05;
+import { DRILL_TICK_MS, advanceDrill } from "./lib/drill";
 
 export default function App() {
   const [streams, setStreams] = useState<SensorStream[]>(createInitialStreams);
@@ -58,7 +57,7 @@ export default function App() {
   useEffect(() => {
     if (!isDrilling) return;
     const timerId = window.setInterval(() => {
-      setDrillProgress((prevProgress) => Math.min(prevProgress + DRILL_STEP, 1));
+      setDrillProgress(advanceDrill);
     }, DRILL_TICK_MS);
     return () => window.clearInterval(timerId);
   }, [isDrilling]);
