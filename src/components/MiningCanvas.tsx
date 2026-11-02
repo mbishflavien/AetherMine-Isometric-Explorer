@@ -164,6 +164,7 @@ export default function MiningCanvas({
               setActiveLens("NORMAL");
             }}
             className="p-1 px-2.5 rounded bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-400 hover:text-white hover:border-slate-700 transition flex items-center gap-1.5"
+            aria-label="Reset the 3D view to its default settings"
             title="Reset Illustration View to Default Settings"
           >
             <RefreshCw className="w-3 h-3" /> Reset View
@@ -175,6 +176,8 @@ export default function MiningCanvas({
 
           <button
             onClick={handleMuteToggle}
+            aria-label={isMuted ? "Enable sound" : "Mute sound"}
+            aria-pressed={!isMuted}
             className={`p-1.5 rounded transition ${
               isMuted ? "text-slate-500 hover:text-slate-300" : "text-[#00D4FF] bg-[#00D4FF]/10 border border-[#00D4FF]/25"
             }`}
@@ -489,6 +492,7 @@ export default function MiningCanvas({
                   <span className="text-[10px] font-mono text-slate-500">Auto rotating 3D orbit:</span>
                   <button
                     onClick={() => { audioEngine.playClick(); setIsOrbiting(!isOrbiting); }}
+                    aria-pressed={isOrbiting}
                     className={`text-[9px] font-mono px-2 py-0.5 rounded font-bold border ${
                       isOrbiting 
                         ? "bg-[#00D4FF]/10 text-[#00D4FF] border-[#00D4FF]/30" 
@@ -594,6 +598,8 @@ export default function MiningCanvas({
                 <button
                   key={l.id}
                   onClick={() => handleSelectLayer(l.id)}
+                  aria-label={`Focus the ${l.title} layer`}
+                  aria-pressed={activeLayerId === l.id}
                   style={{
                     backgroundColor: activeLayerId === l.id ? `${l.color}15` : "",
                     borderColor: activeLayerId === l.id ? l.color : "#1e293b"
