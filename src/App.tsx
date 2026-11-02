@@ -127,7 +127,13 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#07090E] text-slate-100 flex flex-col justify-between font-sans selection:bg-[#00D4FF]/30 selection:text-white">
-      
+      <a
+        href="#main-panel"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[60] focus:rounded focus:border focus:border-[#00D4FF] focus:bg-[#0D1117] focus:px-3 focus:py-2 focus:font-mono focus:text-xs focus:text-[#00D4FF]"
+      >
+        Skip to main content
+      </a>
+
       {/* 🚀 MAIN HEADER */}
       <header className="bg-[#0D1117] border-b border-[#1F2937]/50 h-16 px-4 md:px-6 flex items-center justify-between shadow-md z-50">
         <div className="flex items-center gap-3">
@@ -180,7 +186,11 @@ export default function App() {
       </header>
 
       {/* 🔮 MAIN LAYOUT GRIDS */}
-      <main className="flex-1 max-w-[1700px] w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+      <main
+        id="main-panel"
+        tabIndex={-1}
+        className="flex-1 max-w-[1700px] w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch focus:outline-none"
+      >
         
         {/* Left Column: Interactive 3D Exploded Layer Canvas */}
         <section className="lg:col-span-6 xl:col-span-7 flex flex-col justify-between" id="canvas-panel">
