@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { 
   Satellite, 
@@ -103,13 +103,16 @@ export default function Dashboard({
   };
 
   // Filter ledger records
-  const filteredLedgers = ledgerRecords.filter((rec) => {
-    const matchesSearch = rec.id.toLowerCase().includes(searchText.toLowerCase()) || 
-                          rec.chainHash.toLowerCase().includes(searchText.toLowerCase()) ||
-                          rec.custodyParty.toLowerCase().includes(searchText.toLowerCase());
-    const matchesGrade = gradeMatchesFilter(rec.grade, filterGrade);
-    return matchesSearch && matchesGrade;
-  });
+  const filteredLedgers = useMemo(() => {
+    return ledgerRecords.filter((rec) => {
+      const matchesSearch =
+        rec.id.toLowerCase().includes(searchText.toLowerCase()) ||
+        rec.chainHash.toLowerCase().includes(searchText.toLowerCase()) ||
+        rec.custodyParty.toLowerCase().includes(searchText.toLowerCase());
+      const matchesGrade = gradeMatchesFilter(rec.grade, filterGrade);
+      return matchesSearch && matchesGrade;
+    });
+  }, [ledgerRecords, searchText, filterGrade]);
 
   return (
     <div className="w-full flex flex-col bg-[#0D1117] border border-[#1F2937]/50 rounded-xl overflow-hidden shadow-2xl h-full min-h-[580px]">
