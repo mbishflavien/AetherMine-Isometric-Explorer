@@ -517,6 +517,12 @@ export default function Dashboard({
                 </div>
               </div>
 
+              <p className="sr-only" role="status" aria-live="polite">
+                {ledgerRecords[0]
+                  ? `Newest receipt ${ledgerRecords[0].id} for ${ledgerRecords[0].blockId}.`
+                  : "No receipts recorded yet."}
+              </p>
+
               {/* Ledger list */}
               <div className="flex-1 overflow-y-auto max-h-[340px] pr-1 flex flex-col gap-2.5">
                 {filteredLedgers.length > 0 ? (
