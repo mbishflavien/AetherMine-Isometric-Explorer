@@ -394,7 +394,7 @@ export default function MiningCanvas({
                 </div>
                 <button
                   onClick={() => handleSelectLayer(null)}
-                  className="bg-slate-900 hover:bg-slate-850 p-1 px-3 border border-slate-700 text-white rounded font-bold uppercase transition"
+                  className="bg-slate-900 hover:bg-slate-800 p-1 px-3 border border-slate-700 text-white rounded font-bold uppercase transition"
                 >
                   ← Return to 3D Stack View
                 </button>
@@ -570,7 +570,7 @@ export default function MiningCanvas({
                   </button>
                 </div>
               ) : (
-                <div className="p-4 bg-slate-950/40 border border-slate-850 border-dashed rounded-xl text-center py-8">
+                <div className="p-4 bg-slate-950/40 border border-slate-800 border-dashed rounded-xl text-center py-8">
                   <Focus className="w-5 h-5 text-slate-600 mx-auto mb-2 animate-pulse" />
                   <span className="text-[11px] font-mono text-slate-500 block leading-normal">
                     {activeLayerId 
@@ -585,7 +585,7 @@ export default function MiningCanvas({
           </div>
 
           {/* Quick Strata Selectors Bar in the Sidebar */}
-          <div className="mt-4 pt-3.5 border-t border-slate-850 flex flex-col gap-1 text-[11px] font-mono">
+          <div className="mt-4 pt-3.5 border-t border-slate-800 flex flex-col gap-1 text-[11px] font-mono">
             <span className="text-[9px] text-[#00D4FF] uppercase tracking-wider mb-1.5 font-bold flex items-center gap-1">
               <Layers className="w-3.5 h-3.5" /> Layer Selectors
             </span>
