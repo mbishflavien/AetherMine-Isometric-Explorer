@@ -9,23 +9,14 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-  Volume2, 
-  VolumeX, 
-  Layers, 
-  Compass, 
-  HelpCircle,
-  Activity,
+import {
+  Volume2,
+  VolumeX,
+  Layers,
   Sliders,
-  Maximize2,
-  Minimize2,
-  Zap,
-  Cpu,
   Info,
-  Radio,
-  Eye,
   RefreshCw,
-  Focus
+  Focus,
 } from "lucide-react";
 import { SensorStream, MiningBlock } from "../types";
 import { layers, type Hotspot } from "../data/layers";
@@ -134,8 +125,6 @@ export default function MiningCanvas({
       default: return "";
     }
   };
-
-  const activeBlockObject = blocks.find(b => b.id === selectedBlockId);
 
   return (
     <div id="interactive-mining-canvas" className="relative w-full h-[620px] md:h-[720px] bg-[#080B11] border border-[#1F2937]/50 rounded-xl overflow-hidden shadow-2xl flex flex-col font-sans select-none">
