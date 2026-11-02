@@ -28,11 +28,11 @@
     "node": ">=20"
   },
   "devDependencies": {
-    "@types/node": "^22.14.0",
+    "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "tailwindcss": "^4.1.14",
-    "typescript": "~5.8.2",
+    "typescript": "~7.0.2",
     "vite": "^6.2.3",
     "vitest": "^5.0.5"
   }
