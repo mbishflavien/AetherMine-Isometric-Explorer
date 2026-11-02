@@ -149,7 +149,7 @@ export default function Dashboard({
         </div>
 
         <div className="text-[10px] font-mono text-slate-500 hidden md:block">
-          EPOCH CLOCK: <span className="text-[#FFB300] font-bold">L-893</span>2
+          EPOCH CLOCK: <span className="text-[#FFB300] font-bold">L-8932</span>
         </div>
       </div>
 
