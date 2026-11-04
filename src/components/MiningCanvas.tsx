@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { SensorStream, MiningBlock } from "../types";
 import { layers, type Hotspot } from "../data/layers";
+import { LENS_MODES, type LensMode, lensFilterClass } from "../lib/lens";
 import {
   DEFAULT_VIEW_PREFERENCES,
   loadViewPreferences,
@@ -73,7 +74,7 @@ export default function MiningCanvas({
   // Tab/Focus settings
   const [activeLayerId, setActiveLayerId] = useState<string | null>(null); // null = stacked, otherwise single-view active
   const [selectedHotspot, setSelectedHotspot] = useState<Hotspot | null>(null);
-  const [activeLens, setActiveLens] = useState<"NORMAL" | "RADIOMETRIC" | "GPR_GRID" | "THERMAL">("NORMAL");
+  const [activeLens, setActiveLens] = useState<LensMode>("NORMAL");
 
 
   // Auto-Orbit controller effect
@@ -139,16 +140,6 @@ export default function MiningCanvas({
 
   // Get active selected layer metadata
   const currentLayer = layers.find((l) => l.id === activeLayerId);
-
-  // Determine standard colors for cosmetic overlays based on selected activeLens
-  const getLensColorFilter = () => {
-    switch(activeLens) {
-      case "RADIOMETRIC": return "hue-rotate-180 brightness-110 saturate-[2]";
-      case "GPR_GRID": return "saturate-0 contrast-150 brightness-75 invert-10 sepia-80 hue-rotate-[90deg] saturate-[3]";
-      case "THERMAL": return "invert-0 hue-rotate-[240deg] saturate-[2.5] brightness-110";
-      default: return "";
-    }
-  };
 
   return (
     <div id="interactive-mining-canvas" className="relative w-full h-[620px] md:h-[720px] bg-[#080B11] border border-[#1F2937]/50 rounded-xl overflow-hidden shadow-2xl flex flex-col font-sans select-none">
@@ -285,7 +276,7 @@ export default function MiningCanvas({
                           loading="lazy"
                           decoding="async"
                           referrerPolicy="no-referrer"
-                          className={`w-full h-full object-cover transition duration-300 pointer-events-none ${getLensColorFilter()} ${
+                          className={`w-full h-full object-cover transition duration-300 pointer-events-none ${lensFilterClass(activeLens)} ${
                             isDrilling ? "contrast-115 grayscale-[15%]" : ""
                           }`}
                         />
@@ -328,7 +319,7 @@ export default function MiningCanvas({
               {/* Lens Selection HUD Toggle */}
               <div className="absolute top-3 right-4 z-20 flex items-center gap-1.5 bg-slate-950/80 p-1 rounded-md border border-slate-800/80">
                 <span className="text-[8px] font-mono text-slate-500 mr-1.5 px-1 font-bold">LENS:</span>
-                {(["NORMAL", "RADIOMETRIC", "GPR_GRID", "THERMAL"] as const).map((lns) => (
+                {LENS_MODES.map((lns) => (
                   <button
                     key={lns}
                     onClick={() => { audioEngine.playClick(); setActiveLens(lns); }}
@@ -350,7 +341,7 @@ export default function MiningCanvas({
                   src={currentLayer?.imageUrl}
                   alt={currentLayer?.title}
                   referrerPolicy="no-referrer"
-                  className={`w-full h-full object-cover transition-all duration-300 ${getLensColorFilter()}`}
+                  className={`w-full h-full object-cover transition-all duration-300 ${lensFilterClass(activeLens)}`}
                 />
 
                 {/* Grid Scan sweep bar overlay */}
