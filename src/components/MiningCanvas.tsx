@@ -110,6 +110,19 @@ export default function MiningCanvas({
     return () => window.clearTimeout(timeoutId);
   }, [explosionFactor, pitch, yaw, isOrbiting]);
 
+  // Escape returns to the stacked view from a focused layer.
+  useEffect(() => {
+    if (!activeLayerId) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setActiveLayerId(null);
+        setSelectedHotspot(null);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [activeLayerId]);
+
   // Keep the local mute indicator in sync with every other audio control.
   useEffect(() => audioEngine.subscribe(setIsMuted), []);
 
