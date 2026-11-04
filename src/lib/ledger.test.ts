@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { formatUtcTimestamp, nextLedgerId, randomChainHash } from "./ledger";
+import {
+  formatUtcTimestamp,
+  nextLedgerId,
+  randomChainHash,
+  sumTonnage,
+} from "./ledger";
 import type { LedgerRecord } from "../types";
 
 function record(id: string): LedgerRecord {
@@ -48,5 +53,21 @@ describe("nextLedgerId", () => {
 
   it("works with an empty ledger", () => {
     expect(nextLedgerId([])).toMatch(/^TX-/);
+  });
+});
+
+describe("sumTonnage", () => {
+  it("returns zero for an empty ledger", () => {
+    expect(sumTonnage([])).toBe(0);
+  });
+
+  it("adds every receipt tonnage", () => {
+    expect(sumTonnage([record("TX-A"), record("TX-B")])).toBe(200);
+  });
+
+  it("rounds to a single decimal place", () => {
+    const light = { ...record("TX-C"), tonnage: 0.1 };
+    const lighter = { ...record("TX-D"), tonnage: 0.2 };
+    expect(sumTonnage([light, lighter])).toBe(0.3);
   });
 });
