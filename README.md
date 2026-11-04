@@ -22,6 +22,13 @@ chain-of-custody ledger.
 - **Accessibility** — labelled controls, dialog semantics, keyboard dismissal, focus
   handling, and `prefers-reduced-motion` support.
 
+## Keyboard and preferences
+
+- `Escape` closes the diagnostics dialog and returns from a focused layer to the stack.
+- The 3D camera (explode distance, pitch, yaw, orbit) is stored in `localStorage` and
+  restored on the next visit. Reset View writes the defaults back.
+- The dashboard reopens on the last used tab, and the sound mute preference persists.
+
 ## Getting started
 
 ```bash
@@ -90,6 +97,10 @@ Both are optional for local development; see `.env.example`.
 `npm run build` emits a static bundle in `dist/` that can be served by any static host.
 Layer textures are imported through Vite, so the production build fingerprints and
 serves them correctly.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for a summary of notable changes.
 
 ## License
 
