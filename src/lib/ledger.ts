@@ -31,3 +31,8 @@ export function nextLedgerId(existing: LedgerRecord[]): string {
   }
   return `TX-${Date.now().toString(36).toUpperCase()}`;
 }
+
+export function sumTonnage(records: LedgerRecord[]): number {
+  const total = records.reduce((sum, record) => sum + record.tonnage, 0);
+  return Math.round(total * 10) / 10;
+}
