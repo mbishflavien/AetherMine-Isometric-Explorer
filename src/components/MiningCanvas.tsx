@@ -21,6 +21,7 @@ import {
 import { SensorStream, MiningBlock } from "../types";
 import { layers, type Hotspot } from "../data/layers";
 import { LENS_MODES, type LensMode, lensFilterClass } from "../lib/lens";
+import { splitMetric } from "../lib/format";
 import {
   DEFAULT_VIEW_PREFERENCES,
   loadViewPreferences,
@@ -578,12 +579,15 @@ export default function MiningCanvas({
                     <span className="text-[8px] font-mono text-slate-500 block font-bold leading-none uppercase mb-1">
                       Target Core Metrics:
                     </span>
-                    {selectedHotspot.metrics.map((m, idx) => (
+                    {selectedHotspot.metrics.map((metric, idx) => {
+                      const { label, value } = splitMetric(metric);
+                      return (
                       <div key={idx} className="flex justify-between text-[10px] font-mono">
-                        <span className="text-slate-400">{m.split(":")[0]}:</span>
-                        <span className="text-white font-bold">{m.split(":")[1]}</span>
+                        <span className="text-slate-400">{label}:</span>
+                        <span className="text-white font-bold">{value}</span>
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
 
                   <button
