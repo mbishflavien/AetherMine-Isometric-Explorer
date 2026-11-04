@@ -20,6 +20,11 @@ import {
 } from "lucide-react";
 import { SensorStream, MiningBlock } from "../types";
 import { layers, type Hotspot } from "../data/layers";
+import {
+  DEFAULT_VIEW_PREFERENCES,
+  loadViewPreferences,
+  saveViewPreferences,
+} from "../lib/viewPrefs";
 import { audioEngine } from "./AudioEngine";
 
 interface MiningCanvasProps {
@@ -46,12 +51,23 @@ export default function MiningCanvas({
   activeDrillOffset,
   ledgersCount,
 }: MiningCanvasProps) {
+  const [initialView] = useState(() =>
+    loadViewPreferences(undefined, {
+      ...DEFAULT_VIEW_PREFERENCES,
+      isOrbiting: !prefersReducedMotion(),
+    })
+  );
+
   // 3D Controls
-  const [explosionFactor, setExplosionFactor] = useState<number>(1.2); // 0.4 to 2.2
-  const [pitch, setPitch] = useState<number>(60); // 30 to 80 deg
-  const [yaw, setYaw] = useState<number>(-45); // -180 to 180 deg
+  const [explosionFactor, setExplosionFactor] = useState<number>(
+    initialView.explosionFactor
+  );
+  const [pitch, setPitch] = useState<number>(initialView.pitch);
+  const [yaw, setYaw] = useState<number>(initialView.yaw);
   const [roll, setRoll] = useState<number>(0); // -180 to 180
-  const [isOrbiting, setIsOrbiting] = useState<boolean>(() => !prefersReducedMotion());
+  const [isOrbiting, setIsOrbiting] = useState<boolean>(
+    initialView.isOrbiting
+  );
   const [isMuted, setIsMuted] = useState<boolean>(audioEngine.muted);
   
   // Tab/Focus settings
@@ -84,6 +100,14 @@ export default function MiningCanvas({
     frameId = window.requestAnimationFrame(step);
     return () => window.cancelAnimationFrame(frameId);
   }, [isOrbiting, activeLayerId]);
+
+  // Persist the camera once it settles; continuous orbiting would write on every frame.
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      saveViewPreferences({ explosionFactor, pitch, yaw, isOrbiting });
+    }, 500);
+    return () => window.clearTimeout(timeoutId);
+  }, [explosionFactor, pitch, yaw, isOrbiting]);
 
   // Keep the local mute indicator in sync with every other audio control.
   useEffect(() => audioEngine.subscribe(setIsMuted), []);
