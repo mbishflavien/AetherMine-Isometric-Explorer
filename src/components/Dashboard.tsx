@@ -527,6 +527,13 @@ export default function Dashboard({
                   : "No receipts recorded yet."}
               </p>
 
+              <div className="flex items-center justify-between text-[10px] font-mono text-slate-500">
+                <span>
+                  Showing {filteredLedgers.length} of {ledgerRecords.length} receipts
+                </span>
+                <span>FILTER: {filterGrade} │ QUERY: {searchText ? searchText : "none"}</span>
+              </div>
+
               {/* Ledger list */}
               <div className="flex-1 overflow-y-auto max-h-[340px] pr-1 flex flex-col gap-2.5">
                 {filteredLedgers.length > 0 ? (
