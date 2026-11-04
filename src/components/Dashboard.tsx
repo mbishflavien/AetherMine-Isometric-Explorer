@@ -237,6 +237,7 @@ export default function Dashboard({
                               value={stream.signalStrength}
                               onChange={(e) => handleStrengthChange(stream.id, parseInt(e.target.value))}
                               aria-label={`Signal density for ${stream.name}`}
+                              aria-valuetext={`${stream.signalStrength} percent`}
                               className="w-full h-1.5 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-[#00D4FF]"
                             />
                             <span className="text-[#00D4FF] font-bold w-12 text-right">
