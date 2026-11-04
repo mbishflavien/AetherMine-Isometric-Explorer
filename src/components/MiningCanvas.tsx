@@ -19,7 +19,7 @@ import {
   Focus,
 } from "lucide-react";
 import { SensorStream, MiningBlock } from "../types";
-import { layers, type Hotspot } from "../data/layers";
+import { layers, type Hotspot, type LayerId } from "../data/layers";
 import { LENS_MODES, type LensMode, lensFilterClass } from "../lib/lens";
 import { splitMetric } from "../lib/format";
 import {
@@ -73,7 +73,7 @@ export default function MiningCanvas({
   const [isMuted, setIsMuted] = useState<boolean>(audioEngine.muted);
   
   // Tab/Focus settings
-  const [activeLayerId, setActiveLayerId] = useState<string | null>(null); // null = stacked, otherwise single-view active
+  const [activeLayerId, setActiveLayerId] = useState<LayerId | null>(null); // null = stacked, otherwise single-view active
   const [selectedHotspot, setSelectedHotspot] = useState<Hotspot | null>(null);
   const [activeLens, setActiveLens] = useState<LensMode>("NORMAL");
 
@@ -132,7 +132,7 @@ export default function MiningCanvas({
     audioEngine.playClick();
   };
 
-  const handleSelectLayer = (id: string | null) => {
+  const handleSelectLayer = (id: LayerId | null) => {
     audioEngine.playSonarPing();
     setActiveLayerId(id);
     setSelectedHotspot(null); // reset hotspot when layer swaps

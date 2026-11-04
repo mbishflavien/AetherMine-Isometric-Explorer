@@ -4,6 +4,16 @@ import shallowLayerImage from "../assets/images/shallow_layer_1780592847776.png"
 import skyLayerImage from "../assets/images/sky_layer_1780592814628.png";
 import surfaceLayerImage from "../assets/images/surface_layer_1780592833090.png";
 
+export const LAYER_IDS = [
+  "sky",
+  "surface",
+  "shallow",
+  "deep",
+  "ml_pipeline",
+] as const;
+
+export type LayerId = (typeof LAYER_IDS)[number];
+
 export interface Hotspot {
   id: string;
   name: string;
@@ -14,7 +24,7 @@ export interface Hotspot {
 }
 
 export interface MiningLayer {
-  id: string;
+  id: LayerId;
   index: number;
   title: string;
   subtitle: string;
