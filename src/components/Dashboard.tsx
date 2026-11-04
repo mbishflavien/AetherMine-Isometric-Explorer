@@ -5,24 +5,20 @@
 
 import { useMemo, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { 
-  Satellite, 
-  Eye, 
-  Radio, 
-  Activity, 
-  Cpu, 
-  Play, 
-  TrendingUp, 
-  Clock, 
-  ShieldCheck, 
+import {
+  Cpu,
+  Play,
+  TrendingUp,
+  Clock,
+  ShieldCheck,
   AlertCircle,
-  Database,
   RefreshCw,
   Search,
-  Filter
+  Filter,
 } from "lucide-react";
 import { SensorStream, MiningBlock, LedgerRecord } from "../types";
 import { audioEngine } from "./AudioEngine";
+import StreamIcon from "./StreamIcon";
 import {
   computeConfidenceScore,
   gradeForConfidence,
@@ -92,16 +88,6 @@ export default function Dashboard({
     onUpdateStream(id, { signalStrength: val });
   };
 
-  const getStreamIcon = (type: string) => {
-    switch (type) {
-      case "Satellite": return <Satellite className="w-4 h-4 text-[#00D4FF]" />;
-      case "Hyperspectral": return <Eye className="w-4 h-4 text-[#FFB300]" />;
-      case "Gamma-Ray": return <Radio className="w-4 h-4 text-[#BF00FF]" />;
-      case "GPR": return <Activity className="w-4 h-4 text-[#39FF14]" />;
-      case "EM-Mag": return <Cpu className="w-4 h-4 text-[#FF3D00]" />;
-      default: return <Database className="w-4 h-4" />;
-    }
-  };
 
   // Filter ledger records
   const filteredLedgers = useMemo(() => {
@@ -196,7 +182,7 @@ export default function Dashboard({
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <span className="p-1 rounded bg-slate-900 border border-slate-700">
-                              {getStreamIcon(stream.type)}
+                              <StreamIcon type={stream.type} />
                             </span>
                             <div>
                               <div className="text-xs font-bold text-white leading-tight">
