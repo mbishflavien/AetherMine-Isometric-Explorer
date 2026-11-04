@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { layers } from "./layers";
+import { LAYER_IDS, layers } from "./layers";
 import {
   createInitialBlocks,
   createInitialLedgerRecords,
@@ -54,6 +54,12 @@ describe("layer catalogue", () => {
     const indices = layers.map((layer) => layer.index).sort((a, b) => a - b);
     expect(indices).toEqual([0, 1, 2, 3, 4]);
     expect(new Set(layers.map((layer) => layer.id)).size).toBe(layers.length);
+  });
+
+  it("exposes every catalogue id in the LayerId union", () => {
+    expect(layers.map((layer) => layer.id).sort()).toEqual(
+      [...LAYER_IDS].sort()
+    );
   });
 
   it("places every hotspot inside the frame with unique codes", () => {
