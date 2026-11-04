@@ -18,6 +18,11 @@ import {
 } from "lucide-react";
 import { SensorStream, MiningBlock, LedgerRecord } from "../types";
 import { sumTonnage } from "../lib/ledger";
+import {
+  loadDashboardTab,
+  saveDashboardTab,
+  type DashboardTab,
+} from "../lib/dashboardPrefs";
 import { audioEngine } from "./AudioEngine";
 import StreamIcon from "./StreamIcon";
 import {
@@ -54,12 +59,17 @@ export default function Dashboard({
   onAddLedgerRecord,
   onResetLedger,
 }: DashboardProps) {
-  const [activeTab, setActiveTab] = useState<"ML_PIPELINE" | "BLOCK_LEDGER">("ML_PIPELINE");
+  const [activeTab, setActiveTab] = useState<DashboardTab>(loadDashboardTab);
   const [searchText, setSearchText] = useState("");
   const [filterGrade, setFilterGrade] = useState("ALL");
   const [learningRate, setLearningRate] = useState(0.005);
   const [epochsCount, setEpochsCount] = useState(150);
   const [weightsStatus, setWeightsStatus] = useState("STABLE");
+
+  // Remember which half of the console the operator was last using.
+  useEffect(() => {
+    saveDashboardTab(activeTab);
+  }, [activeTab]);
 
   // Live pipeline metrics derived from the active sensor bands
   const activeCount = streams.filter((s) => s.status === "ACTIVE").length;
