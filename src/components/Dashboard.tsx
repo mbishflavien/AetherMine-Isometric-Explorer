@@ -36,6 +36,12 @@ import { drillDepthMeters, formatDrillPercent } from "../lib/drill";
 import { relativeTime } from "../lib/time";
 import { buildLedgerCsv, ledgerCsvFilename } from "../lib/csv";
 import { copyText } from "../lib/clipboard";
+import {
+  isLedgerGradeFilter,
+  loadLedgerGradeFilter,
+  saveLedgerGradeFilter,
+  type LedgerGradeFilter,
+} from "../lib/ledgerPrefs";
 
 interface DashboardProps {
   streams: SensorStream[];
@@ -66,7 +72,7 @@ export default function Dashboard({
 }: DashboardProps) {
   const [activeTab, setActiveTab] = useState<DashboardTab>(loadDashboardTab);
   const [searchText, setSearchText] = useState("");
-  const [filterGrade, setFilterGrade] = useState("ALL");
+  const [filterGrade, setFilterGrade] = useState<LedgerGradeFilter>(loadLedgerGradeFilter);
   const [learningRate, setLearningRate] = useState(0.005);
   const [epochsCount, setEpochsCount] = useState(150);
   const [weightsStatus, setWeightsStatus] = useState("STABLE");
@@ -548,7 +554,10 @@ export default function Dashboard({
                   <span className="text-xs text-slate-400">Grade:</span>
                   <select
                     value={filterGrade}
-                    onChange={(e) => setFilterGrade(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (isLedgerGradeFilter(value)) setFilterGrade(value);
+                    }}
                     aria-label="Filter ledger by grade"
                     className="bg-slate-950 border border-slate-800 text-xs text-white rounded-md py-1.5 px-3 focus:outline-none"
                   >
