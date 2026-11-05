@@ -132,3 +132,23 @@ describe("saveViewPreferences", () => {
     expect(stored.yaw).toBe(YAW_RANGE.max);
   });
 });
+describe("view preference lens", () => {
+  it("restores a known lens", () => {
+    const prefs = normalizeViewPreferences({ lens: "THERMAL" });
+    expect(prefs.lens).toBe("THERMAL");
+  });
+
+  it("falls back for an unknown lens", () => {
+    const prefs = normalizeViewPreferences({ lens: "X-RAY" });
+    expect(prefs.lens).toBe("NORMAL");
+  });
+
+  it("round-trips the lens through the store", () => {
+    const store = memoryStore();
+    saveViewPreferences(
+      { ...DEFAULT_VIEW_PREFERENCES, lens: "GPR_GRID" },
+      store
+    );
+    expect(loadViewPreferences(store).lens).toBe("GPR_GRID");
+  });
+});
