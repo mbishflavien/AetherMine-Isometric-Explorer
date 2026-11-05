@@ -35,6 +35,7 @@ import {
 import { drillDepthMeters, formatDrillPercent } from "../lib/drill";
 import { relativeTime } from "../lib/time";
 import { buildLedgerCsv, ledgerCsvFilename } from "../lib/csv";
+import { copyText } from "../lib/clipboard";
 
 interface DashboardProps {
   streams: SensorStream[];
@@ -69,6 +70,7 @@ export default function Dashboard({
   const [learningRate, setLearningRate] = useState(0.005);
   const [epochsCount, setEpochsCount] = useState(150);
   const [weightsStatus, setWeightsStatus] = useState("STABLE");
+  const [copiedHash, setCopiedHash] = useState<string | null>(null);
 
   // Remember which half of the console the operator was last using.
   useEffect(() => {
@@ -115,6 +117,16 @@ export default function Dashboard({
       return matchesSearch && matchesGrade;
     });
   }, [ledgerRecords, searchText, filterGrade]);
+
+  const handleCopyHash = async (hash: string) => {
+    audioEngine.playClick();
+    const copied = await copyText(hash);
+    if (!copied) return;
+    setCopiedHash(hash);
+    window.setTimeout(() => {
+      setCopiedHash((current) => (current === hash ? null : current));
+    }, 2000);
+  };
 
   const handleExportCsv = () => {
     audioEngine.playClick();
@@ -621,7 +633,16 @@ export default function Dashboard({
                         </div>
 
                         <div className="col-span-1">
-                          <div className="text-[9px] font-mono text-slate-500">CRYPTOGRAPHIC SIGNATURE:</div>
+                          <div className="flex items-center justify-between gap-1">
+                            <div className="text-[9px] font-mono text-slate-500">CRYPTOGRAPHIC SIGNATURE:</div>
+                            <button
+                              onClick={() => void handleCopyHash(rec.chainHash)}
+                              aria-label={`Copy the hash for ${rec.id}`}
+                              className="text-[9px] font-mono text-[#00D4FF] hover:underline shrink-0"
+                            >
+                              {copiedHash === rec.chainHash ? "Copied" : "Copy"}
+                            </button>
+                          </div>
                           <div className="text-[9px] text-[#00D4FF] font-mono break-all leading-tight bg-slate-950 p-1 border border-slate-900 rounded">
                             {rec.chainHash}
                           </div>
