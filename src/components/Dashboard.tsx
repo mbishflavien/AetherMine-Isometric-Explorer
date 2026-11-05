@@ -547,7 +547,11 @@ export default function Dashboard({
               </div>
 
               {/* Filters & Search Row */}
-              <div className="flex flex-col sm:flex-row gap-3 bg-slate-900/40 p-3 rounded-lg border border-slate-800">
+              <div
+                role="group"
+                aria-label="Ledger filters"
+                className="flex flex-col sm:flex-row gap-3 bg-slate-900/40 p-3 rounded-lg border border-slate-800"
+              >
                 <div className="flex-1 relative">
                   <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
                   <input
