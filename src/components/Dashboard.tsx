@@ -578,7 +578,7 @@ export default function Dashboard({
               </p>
 
               <div className="flex items-center justify-between text-[10px] font-mono text-slate-500">
-                <span>
+                <span role="status" aria-live="polite">
                   Showing {filteredLedgers.length} of {ledgerRecords.length} receipts
                 </span>
                 <span>FILTER: {filterGrade} │ QUERY: {searchText ? searchText : "none"}</span>
