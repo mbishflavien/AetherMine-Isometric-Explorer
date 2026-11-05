@@ -75,7 +75,7 @@ export default function MiningCanvas({
   // Tab/Focus settings
   const [activeLayerId, setActiveLayerId] = useState<LayerId | null>(null); // null = stacked, otherwise single-view active
   const [selectedHotspot, setSelectedHotspot] = useState<Hotspot | null>(null);
-  const [activeLens, setActiveLens] = useState<LensMode>("NORMAL");
+  const [activeLens, setActiveLens] = useState<LensMode>(initialView.lens);
 
 
   // Auto-Orbit controller effect
@@ -106,10 +106,10 @@ export default function MiningCanvas({
   // Persist the camera once it settles; continuous orbiting would write on every frame.
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
-      saveViewPreferences({ explosionFactor, pitch, yaw, isOrbiting });
+      saveViewPreferences({ explosionFactor, pitch, yaw, isOrbiting, lens: activeLens });
     }, 500);
     return () => window.clearTimeout(timeoutId);
-  }, [explosionFactor, pitch, yaw, isOrbiting]);
+  }, [explosionFactor, pitch, yaw, isOrbiting, activeLens]);
 
   // Escape returns to the stacked view from a focused layer.
   useEffect(() => {

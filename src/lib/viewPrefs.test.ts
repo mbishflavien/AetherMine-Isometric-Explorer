@@ -81,6 +81,7 @@ describe("loadViewPreferences", () => {
       pitch: 45,
       yaw: 90,
       isOrbiting: false,
+      lens: "NORMAL",
     });
   });
 
@@ -95,7 +96,13 @@ describe("saveViewPreferences", () => {
   it("round-trips through the store", () => {
     const store = memoryStore();
     saveViewPreferences(
-      { explosionFactor: 1.5, pitch: 70, yaw: -90, isOrbiting: false },
+      {
+        explosionFactor: 1.5,
+        pitch: 70,
+        yaw: -90,
+        isOrbiting: false,
+        lens: "NORMAL",
+      },
       store
     );
     expect(loadViewPreferences(store)).toEqual({
@@ -103,13 +110,20 @@ describe("saveViewPreferences", () => {
       pitch: 70,
       yaw: -90,
       isOrbiting: false,
+      lens: "NORMAL",
     });
   });
 
   it("clamps values before writing them", () => {
     const store = memoryStore();
     saveViewPreferences(
-      { explosionFactor: 99, pitch: 0, yaw: 1000, isOrbiting: true },
+      {
+        explosionFactor: 99,
+        pitch: 0,
+        yaw: 1000,
+        isOrbiting: true,
+        lens: "NORMAL",
+      },
       store
     );
     const stored = JSON.parse(store.data[VIEW_PREFERENCES_KEY]);

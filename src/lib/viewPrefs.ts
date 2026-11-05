@@ -4,12 +4,14 @@ import {
   writeJson,
   type KeyValueStore,
 } from "./storage";
+import { LENS_MODES, type LensMode } from "./lens";
 
 export interface ViewPreferences {
   explosionFactor: number;
   pitch: number;
   yaw: number;
   isOrbiting: boolean;
+  lens: LensMode;
 }
 
 export const VIEW_PREFERENCES_KEY = "aethermine:view-prefs";
@@ -23,10 +25,18 @@ export const DEFAULT_VIEW_PREFERENCES: ViewPreferences = {
   pitch: 60,
   yaw: -45,
   isOrbiting: true,
+  lens: "NORMAL",
 };
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
+}
+
+function isLensMode(value: unknown): value is LensMode {
+  return (
+    typeof value === "string" &&
+    (LENS_MODES as readonly string[]).includes(value)
+  );
 }
 
 function isFiniteNumber(value: unknown): value is number {
@@ -56,6 +66,7 @@ export function normalizeViewPreferences(
       typeof source.isOrbiting === "boolean"
         ? source.isOrbiting
         : fallback.isOrbiting,
+    lens: isLensMode(source.lens) ? source.lens : fallback.lens,
   };
 }
 
