@@ -31,6 +31,7 @@ import {
   gradeMatchesFilter,
 } from "../lib/geology";
 import { drillDepthMeters, formatDrillPercent } from "../lib/drill";
+import { relativeTime } from "../lib/time";
 
 interface DashboardProps {
   streams: SensorStream[];
@@ -552,6 +553,7 @@ export default function Dashboard({
 
                         <div className="flex items-center gap-1.5 text-[10px] font-mono text-slate-400">
                           <Clock className="w-3.5 h-3.5 text-[#FFB300]" /> {rec.timestamp}
+                          <span className="text-slate-600">({relativeTime(rec.timestamp)})</span>
                         </div>
                       </div>
 
