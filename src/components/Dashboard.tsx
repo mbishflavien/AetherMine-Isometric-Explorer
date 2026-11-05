@@ -40,6 +40,7 @@ import {
   gradeMatchesFilter,
 } from "../lib/geology";
 import { drillDepthMeters, formatDrillPercent } from "../lib/drill";
+import { activeBandLabel } from "../lib/streams";
 import { relativeTime } from "../lib/time";
 import { buildLedgerCsv, ledgerCsvFilename } from "../lib/csv";
 import { copyText } from "../lib/clipboard";
@@ -94,7 +95,6 @@ export default function Dashboard({
   }, [activeTab]);
 
   // Live pipeline metrics derived from the active sensor bands
-  const activeCount = streams.filter((s) => s.status === "ACTIVE").length;
   const confidenceScore = computeConfidenceScore(streams);
   const mineralGrade = gradeForConfidence(confidenceScore);
 
@@ -222,7 +222,7 @@ export default function Dashboard({
                     <TrendingUp className="w-3.5 h-3.5" /> Sensor Stream Configurator
                   </h3>
                   <span className="text-[10px] font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded">
-                    Active Streams: {activeCount}/5
+                    Active Streams: {activeBandLabel(streams)}
                   </span>
                 </div>
 
