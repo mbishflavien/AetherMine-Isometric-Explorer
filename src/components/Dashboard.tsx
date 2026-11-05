@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { SensorStream, MiningBlock, LedgerRecord } from "../types";
 import {
+  formatTonnage,
   matchesLedgerQuery,
   sortLedger,
   sumTonnage,
@@ -700,7 +701,7 @@ export default function Dashboard({
               {/* Total volume ledger indicator */}
               <div className="p-3 bg-slate-950/80 border border-slate-800/80 rounded-lg flex items-center justify-between text-[11px] font-mono text-slate-500">
                 <div>HASH CODE REGISTER CONTEXT: <strong className="text-slate-400">ROOT_CHAIN_PUB_PROD</strong></div>
-                <div>TOTAL HAULED: <strong className="text-[#39FF14]">{totalTonnage.toFixed(1)} t</strong></div>
+                <div>TOTAL HAULED: <strong className="text-[#39FF14]">{formatTonnage(totalTonnage)}</strong></div>
                 <div>SEC_SYSTEM: <span className="text-[#39FF14]">SSL_HASH_OK</span></div>
               </div>
 

@@ -62,3 +62,7 @@ export function matchesLedgerQuery(
     record.custodyParty.toLowerCase().includes(needle)
   );
 }
+
+export function formatTonnage(tons: number): string {
+  return `${tons.toFixed(1)} t`;
+}
