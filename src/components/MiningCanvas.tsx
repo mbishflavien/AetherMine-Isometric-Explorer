@@ -124,6 +124,31 @@ export default function MiningCanvas({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [activeLayerId]);
 
+  // Press L to cycle the lens filters without leaving the canvas.
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key.toLowerCase() !== "l") return;
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      const target = event.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+      event.preventDefault();
+      audioEngine.playClick();
+      setActiveLens((current) => {
+        const index = LENS_MODES.indexOf(current);
+        return LENS_MODES[(index + 1) % LENS_MODES.length];
+      });
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
   // Keep the local mute indicator in sync with every other audio control.
   useEffect(() => audioEngine.subscribe(setIsMuted), []);
 
@@ -331,7 +356,10 @@ export default function MiningCanvas({
               </div>
 
               {/* Lens Selection HUD Toggle */}
-              <div className="absolute top-3 right-4 z-20 flex items-center gap-1.5 bg-slate-950/80 p-1 rounded-md border border-slate-800/80">
+              <div
+                aria-keyshortcuts="l"
+                className="absolute top-3 right-4 z-20 flex items-center gap-1.5 bg-slate-950/80 p-1 rounded-md border border-slate-800/80"
+              >
                 <span className="text-[8px] font-mono text-slate-500 mr-1.5 px-1 font-bold">LENS:</span>
                 {LENS_MODES.map((lns) => (
                   <button
