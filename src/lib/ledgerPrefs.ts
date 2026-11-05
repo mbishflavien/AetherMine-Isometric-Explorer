@@ -4,6 +4,7 @@ import {
   writeJson,
   type KeyValueStore,
 } from "./storage";
+import type { LedgerSortOrder } from "./ledger";
 
 export type LedgerGradeFilter = "ALL" | "HIGH" | "MEDIUM" | "LOW";
 
@@ -39,4 +40,33 @@ export function saveLedgerGradeFilter(
   storage: KeyValueStore | null = getBrowserStorage()
 ): void {
   writeJson(storage, LEDGER_GRADE_KEY, filter);
+}
+export const LEDGER_SORT_KEY = "aethermine:ledger-sort";
+
+export const LEDGER_SORT_ORDERS: readonly LedgerSortOrder[] = [
+  "newest",
+  "oldest",
+];
+
+const DEFAULT_SORT: LedgerSortOrder = "newest";
+
+export function isLedgerSortOrder(value: unknown): value is LedgerSortOrder {
+  return (
+    typeof value === "string" &&
+    (LEDGER_SORT_ORDERS as readonly string[]).includes(value)
+  );
+}
+
+export function loadLedgerSortOrder(
+  storage: KeyValueStore | null = getBrowserStorage()
+): LedgerSortOrder {
+  const stored = readJson<unknown>(storage, LEDGER_SORT_KEY);
+  return isLedgerSortOrder(stored) ? stored : DEFAULT_SORT;
+}
+
+export function saveLedgerSortOrder(
+  order: LedgerSortOrder,
+  storage: KeyValueStore | null = getBrowserStorage()
+): void {
+  writeJson(storage, LEDGER_SORT_KEY, order);
 }

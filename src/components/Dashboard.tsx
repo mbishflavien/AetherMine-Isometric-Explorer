@@ -44,7 +44,9 @@ import { copyText } from "../lib/clipboard";
 import {
   isLedgerGradeFilter,
   loadLedgerGradeFilter,
+  loadLedgerSortOrder,
   saveLedgerGradeFilter,
+  saveLedgerSortOrder,
   type LedgerGradeFilter,
 } from "../lib/ledgerPrefs";
 
@@ -82,7 +84,7 @@ export default function Dashboard({
   const [epochsCount, setEpochsCount] = useState(150);
   const [weightsStatus, setWeightsStatus] = useState("STABLE");
   const [copiedHash, setCopiedHash] = useState<string | null>(null);
-  const [sortOrder, setSortOrder] = useState<LedgerSortOrder>("newest");
+  const [sortOrder, setSortOrder] = useState<LedgerSortOrder>(loadLedgerSortOrder);
 
   // Remember which half of the console the operator was last using.
   useEffect(() => {
