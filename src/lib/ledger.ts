@@ -49,3 +49,16 @@ export function sortLedger(
   const sorted = [...records].sort((a, b) => timestampOf(b) - timestampOf(a));
   return order === "newest" ? sorted : sorted.reverse();
 }
+
+export function matchesLedgerQuery(
+  record: LedgerRecord,
+  query: string
+): boolean {
+  const needle = query.trim().toLowerCase();
+  if (!needle) return true;
+  return (
+    record.id.toLowerCase().includes(needle) ||
+    record.chainHash.toLowerCase().includes(needle) ||
+    record.custodyParty.toLowerCase().includes(needle)
+  );
+}

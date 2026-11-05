@@ -19,7 +19,12 @@ import {
   Download,
 } from "lucide-react";
 import { SensorStream, MiningBlock, LedgerRecord } from "../types";
-import { sortLedger, sumTonnage, type LedgerSortOrder } from "../lib/ledger";
+import {
+  matchesLedgerQuery,
+  sortLedger,
+  sumTonnage,
+  type LedgerSortOrder,
+} from "../lib/ledger";
 import {
   loadDashboardTab,
   saveDashboardTab,
@@ -116,12 +121,8 @@ export default function Dashboard({
   // Filter and order ledger records
   const filteredLedgers = useMemo(() => {
     const matches = ledgerRecords.filter((rec) => {
-      const matchesSearch =
-        rec.id.toLowerCase().includes(searchText.toLowerCase()) ||
-        rec.chainHash.toLowerCase().includes(searchText.toLowerCase()) ||
-        rec.custodyParty.toLowerCase().includes(searchText.toLowerCase());
       const matchesGrade = gradeMatchesFilter(rec.grade, filterGrade);
-      return matchesSearch && matchesGrade;
+      return matchesLedgerQuery(rec, searchText) && matchesGrade;
     });
     return sortLedger(matches, sortOrder);
   }, [ledgerRecords, searchText, filterGrade, sortOrder]);
