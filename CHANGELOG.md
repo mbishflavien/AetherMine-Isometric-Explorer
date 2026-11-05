@@ -6,11 +6,14 @@ All notable changes to this project are documented here.
 
 ### Added
 
-- Persistent 3D camera: explode distance, pitch, yaw, and orbit state survive reloads.
+- Persistent 3D camera and lens: explode distance, pitch, yaw, orbit state, and the
+  selected lens survive reloads.
 - Escape returns from a focused layer to the stacked view.
 - The dashboard reopens on the last used tab.
 - Ledger footer totals the hauled tonnage and shows how many receipts the current
   filters match.
+- Ledger receipts show their age, copy their hash, and export the filtered view as CSV.
+- One click clears the ledger search and grade filter.
 - Unit tests for storage, camera preferences, lens filters, metric splitting, drill
   timing, ledger totals, seed data, and the layer catalogue.
 

@@ -25,9 +25,10 @@ chain-of-custody ledger.
 ## Keyboard and preferences
 
 - `Escape` closes the diagnostics dialog and returns from a focused layer to the stack.
-- The 3D camera (explode distance, pitch, yaw, orbit) is stored in `localStorage` and
-  restored on the next visit. Reset View writes the defaults back.
+- The 3D camera (explode distance, pitch, yaw, orbit) and the selected lens are stored
+  in `localStorage` and restored on the next visit. Reset View writes the defaults back.
 - The dashboard reopens on the last used tab, and the sound mute preference persists.
+- Ledger receipts can copy their hash or export the filtered view as CSV.
 
 ## Getting started
 
