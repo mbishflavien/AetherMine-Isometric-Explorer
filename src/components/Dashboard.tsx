@@ -15,6 +15,7 @@ import {
   RefreshCw,
   Search,
   Filter,
+  X,
 } from "lucide-react";
 import { SensorStream, MiningBlock, LedgerRecord } from "../types";
 import { sumTonnage } from "../lib/ledger";
@@ -518,6 +519,19 @@ export default function Dashboard({
                     <option value="LOW">Low Grade</option>
                   </select>
                 </div>
+
+                {(searchText || filterGrade !== "ALL") && (
+                  <button
+                    onClick={() => {
+                      audioEngine.playClick();
+                      setSearchText("");
+                      setFilterGrade("ALL");
+                    }}
+                    className="text-[10px] font-mono text-[#00D4FF] hover:underline flex items-center gap-1 px-2 shrink-0"
+                  >
+                    <X className="w-3 h-3" /> Clear filters
+                  </button>
+                )}
               </div>
 
               <p className="sr-only" role="status" aria-live="polite">
