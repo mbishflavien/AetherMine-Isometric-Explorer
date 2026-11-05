@@ -550,8 +550,17 @@ export default function Dashboard({
                     aria-label="Search ledger records"
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-md py-1.5 pl-9 pr-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#00D4FF]"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-md py-1.5 pl-9 pr-8 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#00D4FF]"
                   />
+                  {searchText && (
+                    <button
+                      onClick={() => setSearchText("")}
+                      aria-label="Clear ledger search"
+                      className="absolute right-2 top-2 text-slate-500 hover:text-[#00D4FF]"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
