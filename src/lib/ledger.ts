@@ -66,3 +66,10 @@ export function matchesLedgerQuery(
 export function formatTonnage(tons: number): string {
   return `${tons.toFixed(1)} t`;
 }
+
+export function averageTonnage(records: LedgerRecord[]): number {
+  if (records.length === 0) return 0;
+  const total = records.reduce((sum, record) => sum + record.tonnage, 0);
+  return Math.round((total / records.length) * 10) / 10;
+}
+
