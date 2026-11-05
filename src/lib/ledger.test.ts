@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  formatTonnage,
   formatUtcTimestamp,
   matchesLedgerQuery,
   nextLedgerId,
@@ -126,5 +127,12 @@ describe("matchesLedgerQuery", () => {
 
   it("trims surrounding whitespace from the query", () => {
     expect(matchesLedgerQuery(rec, "  TX-9042  ")).toBe(true);
+  });
+});
+describe("formatTonnage", () => {
+  it("always shows one decimal place with the unit", () => {
+    expect(formatTonnage(12)).toBe("12.0 t");
+    expect(formatTonnage(12.44)).toBe("12.4 t");
+    expect(formatTonnage(0)).toBe("0.0 t");
   });
 });
