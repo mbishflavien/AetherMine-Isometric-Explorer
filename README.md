@@ -28,7 +28,8 @@ chain-of-custody ledger.
 - The 3D camera (explode distance, pitch, yaw, orbit) and the selected lens are stored
   in `localStorage` and restored on the next visit. Reset View writes the defaults back.
 - The dashboard reopens on the last used tab, and the sound mute preference persists.
-- Ledger receipts can copy their hash or export the filtered view as CSV.
+- Ledger receipts can copy their hash or export the filtered view as CSV, and the used
+  grade filter is remembered between visits.
 
 ## Getting started
 
