@@ -14,7 +14,9 @@ All notable changes to this project are documented here.
   filters match.
 - Ledger receipts show their age, copy their hash, and export the filtered view as CSV.
 - One click clears the ledger search and grade filter.
-- The ledger remembers its grade filter and can list receipts newest or oldest first.
+- The ledger remembers its grade filter and sort order, and can list receipts newest or
+  oldest first.
+- `L` cycles the lens filters, and the search field clears in place.
 - Unit tests for storage, camera preferences, lens filters, metric splitting, drill
   timing, ledger totals, seed data, and the layer catalogue.
 

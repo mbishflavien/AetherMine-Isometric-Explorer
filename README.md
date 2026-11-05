@@ -25,6 +25,7 @@ chain-of-custody ledger.
 ## Keyboard and preferences
 
 - `Escape` closes the diagnostics dialog and returns from a focused layer to the stack.
+- `L` cycles through the lens filters.
 - The 3D camera (explode distance, pitch, yaw, orbit) and the selected lens are stored
   in `localStorage` and restored on the next visit. Reset View writes the defaults back.
 - The dashboard reopens on the last used tab, and the sound mute preference persists.
