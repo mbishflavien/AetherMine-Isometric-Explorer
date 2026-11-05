@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   formatUtcTimestamp,
+  matchesLedgerQuery,
   nextLedgerId,
   randomChainHash,
   sortLedger,
@@ -103,5 +104,27 @@ describe("sortLedger", () => {
       "TX-NEW",
       "TX-???",
     ]);
+  });
+});
+describe("matchesLedgerQuery", () => {
+  const rec = record("TX-9042");
+
+  it("matches everything for a blank query", () => {
+    expect(matchesLedgerQuery(rec, "")).toBe(true);
+    expect(matchesLedgerQuery(rec, "   ")).toBe(true);
+  });
+
+  it("matches the id, hash, and custody party case-insensitively", () => {
+    expect(matchesLedgerQuery(rec, "tx-90")).toBe(true);
+    expect(matchesLedgerQuery(rec, "0X0")).toBe(true);
+    expect(matchesLedgerQuery(rec, "operator")).toBe(true);
+  });
+
+  it("does not match unrelated text", () => {
+    expect(matchesLedgerQuery(rec, "block zeta")).toBe(false);
+  });
+
+  it("trims surrounding whitespace from the query", () => {
+    expect(matchesLedgerQuery(rec, "  TX-9042  ")).toBe(true);
   });
 });
