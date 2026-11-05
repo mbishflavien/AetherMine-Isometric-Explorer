@@ -19,7 +19,7 @@ import {
   Download,
 } from "lucide-react";
 import { SensorStream, MiningBlock, LedgerRecord } from "../types";
-import { sumTonnage } from "../lib/ledger";
+import { sortLedger, sumTonnage, type LedgerSortOrder } from "../lib/ledger";
 import {
   loadDashboardTab,
   saveDashboardTab,
@@ -77,6 +77,7 @@ export default function Dashboard({
   const [epochsCount, setEpochsCount] = useState(150);
   const [weightsStatus, setWeightsStatus] = useState("STABLE");
   const [copiedHash, setCopiedHash] = useState<string | null>(null);
+  const [sortOrder, setSortOrder] = useState<LedgerSortOrder>("newest");
 
   // Remember which half of the console the operator was last using.
   useEffect(() => {
@@ -112,9 +113,9 @@ export default function Dashboard({
   };
 
 
-  // Filter ledger records
+  // Filter and order ledger records
   const filteredLedgers = useMemo(() => {
-    return ledgerRecords.filter((rec) => {
+    const matches = ledgerRecords.filter((rec) => {
       const matchesSearch =
         rec.id.toLowerCase().includes(searchText.toLowerCase()) ||
         rec.chainHash.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -122,7 +123,8 @@ export default function Dashboard({
       const matchesGrade = gradeMatchesFilter(rec.grade, filterGrade);
       return matchesSearch && matchesGrade;
     });
-  }, [ledgerRecords, searchText, filterGrade]);
+    return sortLedger(matches, sortOrder);
+  }, [ledgerRecords, searchText, filterGrade, sortOrder]);
 
   const totalTonnage = useMemo(() => sumTonnage(ledgerRecords), [ledgerRecords]);
 
@@ -592,7 +594,21 @@ export default function Dashboard({
                 <span role="status" aria-live="polite">
                   Showing {filteredLedgers.length} of {ledgerRecords.length} receipts
                 </span>
-                <span>FILTER: {filterGrade} │ QUERY: {searchText ? searchText : "none"}</span>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => {
+                      audioEngine.playClick();
+                      setSortOrder((current) =>
+                        current === "newest" ? "oldest" : "newest"
+                      );
+                    }}
+                    className="text-[#00D4FF] hover:underline"
+                    aria-label={`Sort receipts ${sortOrder === "newest" ? "oldest first" : "newest first"}`}
+                  >
+                    {sortOrder === "newest" ? "NEWEST FIRST" : "OLDEST FIRST"}
+                  </button>
+                  <span>FILTER: {filterGrade} │ QUERY: {searchText ? searchText : "none"}</span>
+                </div>
               </div>
 
               {/* Ledger list */}

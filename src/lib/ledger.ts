@@ -1,4 +1,5 @@
 import type { LedgerRecord } from "../types";
+import { parseUtcTimestamp } from "./time";
 
 const HASH_PREFIX = "0x";
 const HASH_LENGTH = 40;
@@ -35,4 +36,16 @@ export function nextLedgerId(existing: LedgerRecord[]): string {
 export function sumTonnage(records: LedgerRecord[]): number {
   const total = records.reduce((sum, record) => sum + record.tonnage, 0);
   return Math.round(total * 10) / 10;
+}
+
+export type LedgerSortOrder = "newest" | "oldest";
+
+export function sortLedger(
+  records: LedgerRecord[],
+  order: LedgerSortOrder = "newest"
+): LedgerRecord[] {
+  const timestampOf = (record: LedgerRecord) =>
+    parseUtcTimestamp(record.timestamp)?.getTime() ?? 0;
+  const sorted = [...records].sort((a, b) => timestampOf(b) - timestampOf(a));
+  return order === "newest" ? sorted : sorted.reverse();
 }
