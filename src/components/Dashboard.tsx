@@ -16,6 +16,7 @@ import {
   Search,
   Filter,
   X,
+  Download,
 } from "lucide-react";
 import { SensorStream, MiningBlock, LedgerRecord } from "../types";
 import { sumTonnage } from "../lib/ledger";
@@ -33,6 +34,7 @@ import {
 } from "../lib/geology";
 import { drillDepthMeters, formatDrillPercent } from "../lib/drill";
 import { relativeTime } from "../lib/time";
+import { buildLedgerCsv, ledgerCsvFilename } from "../lib/csv";
 
 interface DashboardProps {
   streams: SensorStream[];
@@ -113,6 +115,19 @@ export default function Dashboard({
       return matchesSearch && matchesGrade;
     });
   }, [ledgerRecords, searchText, filterGrade]);
+
+  const handleExportCsv = () => {
+    audioEngine.playClick();
+    const blob = new Blob([buildLedgerCsv(filteredLedgers)], {
+      type: "text/csv;charset=utf-8",
+    });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = ledgerCsvFilename();
+    anchor.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="w-full flex flex-col bg-[#0D1117] border border-[#1F2937]/50 rounded-xl overflow-hidden shadow-2xl h-full min-h-[580px]">
@@ -476,18 +491,28 @@ export default function Dashboard({
                   </p>
                 </div>
                 
-                {/* Reset button to clear ledger back to genesis */}
-                <button
-                  onClick={() => {
-                    audioEngine.playSonarPing();
-                    setSearchText("");
-                    setFilterGrade("ALL");
-                    onResetLedger();
-                  }}
-                  className="text-[10px] font-mono text-[#00D4FF] hover:underline flex items-center gap-1.5 self-start md:self-auto bg-slate-900 px-3 py-1.5 rounded border border-slate-800 shrink-0"
-                >
-                  <RefreshCw className="w-3" /> Reload Genesis State
-                </button>
+                <div className="flex items-center gap-2 self-start md:self-auto shrink-0">
+                  <button
+                    onClick={handleExportCsv}
+                    disabled={filteredLedgers.length === 0}
+                    className="text-[10px] font-mono text-[#39FF14] hover:underline flex items-center gap-1.5 bg-slate-900 px-3 py-1.5 rounded border border-slate-800 disabled:opacity-40 disabled:no-underline"
+                  >
+                    <Download className="w-3" /> Export CSV
+                  </button>
+
+                  {/* Reset button to clear ledger back to genesis */}
+                  <button
+                    onClick={() => {
+                      audioEngine.playSonarPing();
+                      setSearchText("");
+                      setFilterGrade("ALL");
+                      onResetLedger();
+                    }}
+                    className="text-[10px] font-mono text-[#00D4FF] hover:underline flex items-center gap-1.5 bg-slate-900 px-3 py-1.5 rounded border border-slate-800"
+                  >
+                    <RefreshCw className="w-3" /> Reload Genesis State
+                  </button>
+                </div>
               </div>
 
               {/* Filters & Search Row */}
