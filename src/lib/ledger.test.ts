@@ -3,6 +3,7 @@ import {
   formatUtcTimestamp,
   nextLedgerId,
   randomChainHash,
+  sortLedger,
   sumTonnage,
 } from "./ledger";
 import type { LedgerRecord } from "../types";
@@ -69,5 +70,38 @@ describe("sumTonnage", () => {
     const light = { ...record("TX-C"), tonnage: 0.1 };
     const lighter = { ...record("TX-D"), tonnage: 0.2 };
     expect(sumTonnage([light, lighter])).toBe(0.3);
+  });
+});
+describe("sortLedger", () => {
+  const older = { ...record("TX-OLD"), timestamp: "2026-01-02 08:00:00 UTC" };
+  const newer = { ...record("TX-NEW"), timestamp: "2026-06-04 15:30:24 UTC" };
+  const newest = { ...record("TX-TOP"), timestamp: "2026-11-04 12:00:00 UTC" };
+
+  it("puts the newest receipt first by default", () => {
+    expect(sortLedger([older, newest, newer]).map((r) => r.id)).toEqual([
+      "TX-TOP",
+      "TX-NEW",
+      "TX-OLD",
+    ]);
+  });
+
+  it("reverses the order when asked for the oldest first", () => {
+    expect(
+      sortLedger([newer, older, newest], "oldest").map((r) => r.id)
+    ).toEqual(["TX-OLD", "TX-NEW", "TX-TOP"]);
+  });
+
+  it("does not mutate the input list", () => {
+    const records = [older, newer];
+    sortLedger(records);
+    expect(records.map((r) => r.id)).toEqual(["TX-OLD", "TX-NEW"]);
+  });
+
+  it("keeps unparseable timestamps at the end", () => {
+    const unknown: LedgerRecord = { ...record("TX-???"), timestamp: "pending" };
+    expect(sortLedger([unknown, newer]).map((r) => r.id)).toEqual([
+      "TX-NEW",
+      "TX-???",
+    ]);
   });
 });
