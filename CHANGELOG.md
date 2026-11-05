@@ -10,15 +10,17 @@ All notable changes to this project are documented here.
   selected lens survive reloads.
 - Escape returns from a focused layer to the stacked view.
 - The dashboard reopens on the last used tab.
-- Ledger footer totals the hauled tonnage and shows how many receipts the current
-  filters match.
+- Ledger footer totals the hauled tonnage, shows how many receipts the current
+  filters match, and averages their tonnage.
+- The pipeline header counts active bands against the configured total.
 - Ledger receipts show their age, copy their hash, and export the filtered view as CSV.
 - One click clears the ledger search and grade filter.
 - The ledger remembers its grade filter and sort order, and can list receipts newest or
   oldest first.
 - `L` cycles the lens filters, and the search field clears in place.
 - Unit tests for storage, camera preferences, lens filters, metric splitting, drill
-  timing, ledger totals, seed data, and the layer catalogue.
+  timing, ledger totals and averages, stream counts, seed data, and the layer
+  catalogue.
 
 ### Changed
 
