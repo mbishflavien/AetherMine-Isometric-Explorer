@@ -61,14 +61,27 @@ src/
   main.tsx                React root + error boundary
   types.ts                shared domain types
   data/seed.ts            initial streams, blocks, and ledger receipts
+  data/layers.ts          layer catalogue and the LayerId union
   lib/
     geology.ts            confidence score and grade rules
-    ledger.ts             receipt ids, chain hashes, UTC timestamps
+    ledger.ts             receipt ids, hashes, timestamps, totals, sorting
+    streams.ts            active band counts
+    storage.ts            guarded localStorage reader/writer
+    viewPrefs.ts          camera and lens preferences
+    dashboardPrefs.ts     active dashboard tab
+    ledgerPrefs.ts        grade filter and sort order
+    lens.ts               lens modes and filter classes
+    time.ts               UTC parsing and relative ages
+    format.ts             hotspot metric splitting
+    drill.ts              drill timing helpers
+    csv.ts                ledger CSV export
+    clipboard.ts          guarded clipboard writer
     *.test.ts             unit tests for the above
   hooks/useUtcClock.ts    one-second UTC clock
   components/
     MiningCanvas.tsx      isometric stack, focus view, 3D controls
     Dashboard.tsx         sensor console, ML metrics, ledger tab
+    StreamIcon.tsx        per-band sensor icon
     DiagnosticsModal.tsx  in-app manual and keyboard handling
     AudioEngine.ts        Web Audio synthesizer singleton
     ErrorBoundary.tsx     render-failure fallback
