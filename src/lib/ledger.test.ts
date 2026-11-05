@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  averageTonnage,
   formatTonnage,
   formatUtcTimestamp,
   matchesLedgerQuery,
@@ -134,5 +135,23 @@ describe("formatTonnage", () => {
     expect(formatTonnage(12)).toBe("12.0 t");
     expect(formatTonnage(12.44)).toBe("12.4 t");
     expect(formatTonnage(0)).toBe("0.0 t");
+  });
+});
+describe("averageTonnage", () => {
+  it("returns zero for an empty ledger", () => {
+    expect(averageTonnage([])).toBe(0);
+  });
+
+  it("averages the receipt tonnages", () => {
+    const light = { ...record("TX-A"), tonnage: 10 };
+    const heavy = { ...record("TX-B"), tonnage: 20 };
+    expect(averageTonnage([light, heavy])).toBe(15);
+  });
+
+  it("rounds the average to one decimal place", () => {
+    const first = { ...record("TX-C"), tonnage: 10 };
+    const second = { ...record("TX-D"), tonnage: 10 };
+    const third = { ...record("TX-E"), tonnage: 11 };
+    expect(averageTonnage([first, second, third])).toBe(10.3);
   });
 });
