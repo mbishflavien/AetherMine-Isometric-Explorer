@@ -58,6 +58,8 @@ export function matchesLedgerQuery(
   if (!needle) return true;
   return (
     record.id.toLowerCase().includes(needle) ||
+    record.blockId.toLowerCase().includes(needle) ||
+    record.grade.toLowerCase().includes(needle) ||
     record.chainHash.toLowerCase().includes(needle) ||
     record.custodyParty.toLowerCase().includes(needle)
   );

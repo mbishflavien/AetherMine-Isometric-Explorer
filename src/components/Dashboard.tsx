@@ -556,7 +556,7 @@ export default function Dashboard({
                   <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
                   <input
                     type="text"
-                    placeholder="Search by block ID, hash signature, or custody party..."
+                    placeholder="Search by block, grade, hash signature, or custody party..."
                     aria-label="Search ledger records"
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
