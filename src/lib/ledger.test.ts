@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   averageTonnage,
+  countLedgerGrades,
   formatTonnage,
   formatUtcTimestamp,
   matchesLedgerQuery,
@@ -158,5 +159,31 @@ describe("averageTonnage", () => {
     const second = { ...record("TX-D"), tonnage: 10 };
     const third = { ...record("TX-E"), tonnage: 11 };
     expect(averageTonnage([first, second, third])).toBe(10.3);
+  });
+});
+describe("countLedgerGrades", () => {
+  it("counts each grade prefix and the full ledger", () => {
+    const records: LedgerRecord[] = [
+      { ...record("TX-1"), grade: "HIGH (Coltan: 84%)" },
+      { ...record("TX-2"), grade: "HIGH" },
+      { ...record("TX-3"), grade: "MEDIUM (Gold: 42%)" },
+      { ...record("TX-4"), grade: "LOW (Tin: 12%)" },
+      { ...record("TX-5"), grade: "TRACE (Gold: 2%)" },
+    ];
+    expect(countLedgerGrades(records)).toEqual({
+      ALL: 5,
+      HIGH: 2,
+      MEDIUM: 1,
+      LOW: 1,
+    });
+  });
+
+  it("returns zero counts for an empty ledger", () => {
+    expect(countLedgerGrades([])).toEqual({
+      ALL: 0,
+      HIGH: 0,
+      MEDIUM: 0,
+      LOW: 0,
+    });
   });
 });
