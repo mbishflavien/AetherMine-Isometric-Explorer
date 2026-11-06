@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Cpu,
@@ -89,6 +89,31 @@ export default function Dashboard({
   const [weightsStatus, setWeightsStatus] = useState("STABLE");
   const [copiedHash, setCopiedHash] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<LedgerSortOrder>(loadLedgerSortOrder);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Jump to the ledger search with a slash while the ledger tab is open.
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "/" || event.metaKey || event.ctrlKey || event.altKey) {
+        return;
+      }
+      if (activeTab !== "BLOCK_LEDGER") return;
+      const target = event.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.tagName === "SELECT" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+      event.preventDefault();
+      searchInputRef.current?.focus();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [activeTab]);
 
   // Remember which half of the console the operator was last using.
   useEffect(() => {
@@ -560,7 +585,8 @@ export default function Dashboard({
                 <div className="flex-1 relative">
                   <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
                   <input
-                    type="text"
+                    ref={searchInputRef}
+                    type="search"
                     placeholder="Search by block, grade, hash signature, or custody party..."
                     aria-label="Search ledger records"
                     value={searchText}
