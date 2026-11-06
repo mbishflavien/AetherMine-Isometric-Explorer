@@ -21,6 +21,7 @@ import {
 import { SensorStream, MiningBlock, LedgerRecord } from "../types";
 import {
   averageTonnage,
+  countLedgerGrades,
   formatTonnage,
   matchesLedgerQuery,
   sortLedger,
@@ -132,6 +133,10 @@ export default function Dashboard({
   }, [ledgerRecords, searchText, filterGrade, sortOrder]);
 
   const totalTonnage = useMemo(() => sumTonnage(ledgerRecords), [ledgerRecords]);
+  const gradeCounts = useMemo(
+    () => countLedgerGrades(ledgerRecords),
+    [ledgerRecords]
+  );
   const averageTons = useMemo(
     () => averageTonnage(filteredLedgers),
     [filteredLedgers]
@@ -585,10 +590,10 @@ export default function Dashboard({
                     aria-label="Filter ledger by grade"
                     className="bg-slate-950 border border-slate-800 text-xs text-white rounded-md py-1.5 px-3 focus:outline-none"
                   >
-                    <option value="ALL">All Grades</option>
-                    <option value="HIGH">High Grade</option>
-                    <option value="MEDIUM">Medium Grade</option>
-                    <option value="LOW">Low Grade</option>
+                    <option value="ALL">All Grades ({gradeCounts.ALL})</option>
+                    <option value="HIGH">High Grade ({gradeCounts.HIGH})</option>
+                    <option value="MEDIUM">Medium Grade ({gradeCounts.MEDIUM})</option>
+                    <option value="LOW">Low Grade ({gradeCounts.LOW})</option>
                   </select>
                 </div>
 

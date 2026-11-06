@@ -75,3 +75,23 @@ export function averageTonnage(records: LedgerRecord[]): number {
   return Math.round((total / records.length) * 10) / 10;
 }
 
+export type LedgerGradeCounts = Record<
+  "ALL" | "HIGH" | "MEDIUM" | "LOW",
+  number
+>;
+
+export function countLedgerGrades(records: LedgerRecord[]): LedgerGradeCounts {
+  const counts: LedgerGradeCounts = {
+    ALL: records.length,
+    HIGH: 0,
+    MEDIUM: 0,
+    LOW: 0,
+  };
+  for (const record of records) {
+    if (record.grade.startsWith("HIGH")) counts.HIGH += 1;
+    else if (record.grade.startsWith("MEDIUM")) counts.MEDIUM += 1;
+    else if (record.grade.startsWith("LOW")) counts.LOW += 1;
+  }
+  return counts;
+}
+
