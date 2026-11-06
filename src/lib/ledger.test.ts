@@ -122,6 +122,11 @@ describe("matchesLedgerQuery", () => {
     expect(matchesLedgerQuery(rec, "operator")).toBe(true);
   });
 
+  it("matches the block and grade case-insensitively", () => {
+    expect(matchesLedgerQuery(rec, "block a")).toBe(true);
+    expect(matchesLedgerQuery(rec, "high")).toBe(true);
+  });
+
   it("does not match unrelated text", () => {
     expect(matchesLedgerQuery(rec, "block zeta")).toBe(false);
   });
