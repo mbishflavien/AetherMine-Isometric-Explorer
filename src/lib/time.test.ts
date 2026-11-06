@@ -19,6 +19,13 @@ describe("parseUtcTimestamp", () => {
     expect(parseUtcTimestamp("2026-06-04")).toBeNull();
     expect(parseUtcTimestamp("")).toBeNull();
   });
+
+  it("rejects dates and times that do not exist", () => {
+    expect(parseUtcTimestamp("2026-02-31 10:00:00 UTC")).toBeNull();
+    expect(parseUtcTimestamp("2026-13-01 10:00:00 UTC")).toBeNull();
+    expect(parseUtcTimestamp("2026-06-04 24:00:00 UTC")).toBeNull();
+    expect(parseUtcTimestamp("2026-06-04 10:60:00 UTC")).toBeNull();
+  });
 });
 
 describe("relativeTime", () => {
