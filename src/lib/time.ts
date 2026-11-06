@@ -9,17 +9,26 @@ export function parseUtcTimestamp(value: string): Date | null {
   const match = UTC_PATTERN.exec(value.trim());
   if (!match) return null;
   const [, year, month, day, hours, minutes, seconds] = match;
+  const parts = [year, month, day, hours, minutes, seconds].map(Number);
   const date = new Date(
     Date.UTC(
-      Number(year),
-      Number(month) - 1,
-      Number(day),
-      Number(hours),
-      Number(minutes),
-      Number(seconds)
+      parts[0],
+      parts[1] - 1,
+      parts[2],
+      parts[3],
+      parts[4],
+      parts[5]
     )
   );
-  return Number.isNaN(date.getTime()) ? null : date;
+  if (Number.isNaN(date.getTime())) return null;
+  const roundTrips =
+    date.getUTCFullYear() === parts[0] &&
+    date.getUTCMonth() === parts[1] - 1 &&
+    date.getUTCDate() === parts[2] &&
+    date.getUTCHours() === parts[3] &&
+    date.getUTCMinutes() === parts[4] &&
+    date.getUTCSeconds() === parts[5];
+  return roundTrips ? date : null;
 }
 
 export function relativeTime(value: string, now: Date = new Date()): string {
