@@ -591,6 +591,16 @@ export default function Dashboard({
                     aria-label="Search ledger records"
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key !== "Escape") return;
+                      event.preventDefault();
+                      event.stopPropagation();
+                      if (searchText) {
+                        setSearchText("");
+                      } else {
+                        event.currentTarget.blur();
+                      }
+                    }}
                     className="w-full bg-slate-950 border border-slate-800 rounded-md py-1.5 pl-9 pr-8 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#00D4FF]"
                   />
                   {searchText && (
