@@ -11,7 +11,10 @@ export const LEDGER_CSV_COLUMNS = [
 ] as const;
 
 function escapeCell(value: string): string {
-  return /[",\n\r]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value;
+  const guarded = /^[=+\-@\t\r]/.test(value) ? `'${value}` : value;
+  return /[",\n\r]/.test(guarded)
+    ? `"${guarded.replace(/"/g, '""')}"`
+    : guarded;
 }
 
 export function buildLedgerCsv(records: LedgerRecord[]): string {
