@@ -132,6 +132,20 @@ export default function DiagnosticsModal({ open, onClose }: DiagnosticsModalProp
                 </p>
               </div>
 
+              <div>
+                <h3 className="font-bold text-xs font-mono text-[#00D4FF] uppercase mb-1">
+                  Keyboard Shortcuts
+                </h3>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1 text-[11px] text-slate-400 font-mono">
+                  <li><kbd className="text-slate-200">L</kbd> cycles the lens filters.</li>
+                  <li><kbd className="text-slate-200">Escape</kbd> returns to the stacked layer view.</li>
+                  <li><kbd className="text-slate-200">/</kbd> focuses the ledger search.</li>
+                  <li><kbd className="text-slate-200">Escape</kbd> clears the search, then leaves it.</li>
+                  <li><kbd className="text-slate-200">←</kbd> <kbd className="text-slate-200">→</kbd> switch dashboard tabs.</li>
+                  <li><kbd className="text-slate-200">Tab</kbd> stays inside this dialog.</li>
+                </ul>
+              </div>
+
               <div className="bg-[#122A21] border border-[#39FF14]/30 p-2 text-[11px] font-mono rounded text-[#A7F3D0] flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-[#39FF14] animate-ping" />
                 Telemetry verified. Fully active localized browser synthesizers ready for sonar
