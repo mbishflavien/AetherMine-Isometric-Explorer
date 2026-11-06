@@ -3,13 +3,16 @@ import type { KeyValueStore } from "./storage";
 import {
   LEDGER_GRADE_FILTERS,
   LEDGER_GRADE_KEY,
+  LEDGER_QUERY_KEY,
   LEDGER_SORT_KEY,
   LEDGER_SORT_ORDERS,
   isLedgerGradeFilter,
   isLedgerSortOrder,
   loadLedgerGradeFilter,
+  loadLedgerQuery,
   loadLedgerSortOrder,
   saveLedgerGradeFilter,
+  saveLedgerQuery,
   saveLedgerSortOrder,
 } from "./ledgerPrefs";
 
@@ -86,5 +89,23 @@ describe("ledger sort order", () => {
     const store = memoryStore();
     saveLedgerSortOrder("oldest", store);
     expect(loadLedgerSortOrder(store)).toBe("oldest");
+  });
+});
+describe("ledger search query", () => {
+  it("restores a stored query and defaults to empty", () => {
+    expect(
+      loadLedgerQuery(memoryStore({ [LEDGER_QUERY_KEY]: JSON.stringify("block a") }))
+    ).toBe("block a");
+    expect(loadLedgerQuery(memoryStore())).toBe("");
+    expect(
+      loadLedgerQuery(memoryStore({ [LEDGER_QUERY_KEY]: JSON.stringify(41) }))
+    ).toBe("");
+  });
+
+  it("round-trips through the store", () => {
+    const store = memoryStore();
+    saveLedgerQuery("operator", store);
+    expect(store.data[LEDGER_QUERY_KEY]).toBe(JSON.stringify("operator"));
+    expect(loadLedgerQuery(store)).toBe("operator");
   });
 });
