@@ -70,3 +70,18 @@ export function saveLedgerSortOrder(
 ): void {
   writeJson(storage, LEDGER_SORT_KEY, order);
 }
+export const LEDGER_QUERY_KEY = "aethermine:ledger-query";
+
+export function loadLedgerQuery(
+  storage: KeyValueStore | null = getBrowserStorage()
+): string {
+  const stored = readJson<unknown>(storage, LEDGER_QUERY_KEY);
+  return typeof stored === "string" ? stored : "";
+}
+
+export function saveLedgerQuery(
+  query: string,
+  storage: KeyValueStore | null = getBrowserStorage()
+): void {
+  writeJson(storage, LEDGER_QUERY_KEY, query);
+}

@@ -54,8 +54,10 @@ import { copyText } from "../lib/clipboard";
 import {
   isLedgerGradeFilter,
   loadLedgerGradeFilter,
+  loadLedgerQuery,
   loadLedgerSortOrder,
   saveLedgerGradeFilter,
+  saveLedgerQuery,
   saveLedgerSortOrder,
   type LedgerGradeFilter,
 } from "../lib/ledgerPrefs";
@@ -88,7 +90,7 @@ export default function Dashboard({
   onResetLedger,
 }: DashboardProps) {
   const [activeTab, setActiveTab] = useState<DashboardTab>(loadDashboardTab);
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(loadLedgerQuery);
   const [filterGrade, setFilterGrade] = useState<LedgerGradeFilter>(loadLedgerGradeFilter);
   const [learningRate, setLearningRate] = useState(0.005);
   const [epochsCount, setEpochsCount] = useState(150);
@@ -117,6 +119,11 @@ export default function Dashboard({
     const ref = next === "ML_PIPELINE" ? mlTabRef : ledgerTabRef;
     ref.current?.focus();
   };
+
+  // Remember the ledger query so a reload keeps the operator in context.
+  useEffect(() => {
+    saveLedgerQuery(searchText);
+  }, [searchText]);
 
   // Jump to the ledger search with a slash while the ledger tab is open.
   useEffect(() => {
