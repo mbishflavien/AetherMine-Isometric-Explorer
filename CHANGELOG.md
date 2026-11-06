@@ -18,6 +18,11 @@ All notable changes to this project are documented here.
 - The ledger remembers its grade filter and sort order, and can list receipts newest or
   oldest first.
 - `L` cycles the lens filters, and the search field clears in place.
+- The ledger search matches blocks and grades, shows a count per grade in the
+  filter, remembers the query, and clears or focuses with `Escape` and `/`.
+- Dashboard tabs respond to the arrow keys, `Home`, and `End`, and the diagnostics
+  dialog keeps keyboard focus inside it.
+- The ledger list exposes list semantics to assistive technology.
 - Unit tests for storage, camera preferences, lens filters, metric splitting, drill
   timing, ledger totals and averages, stream counts, seed data, and the layer
   catalogue.
@@ -27,11 +32,14 @@ All notable changes to this project are documented here.
 - Layer catalogue moved to `src/data/layers.ts` with a derived `LayerId` union.
 - Lens filter classes extracted to `src/lib/lens.ts`; drill timing to `src/lib/drill.ts`.
 - Sensor stream icon extracted into its own component; the ledger list is memoized.
-- CI runs with read-only permissions and cancels superseded runs.
+- CI runs with read-only permissions, cancels superseded runs, and reuses
+  `npm run check` across Node 20 and 22 with a job timeout.
 - Added Dependabot, `.editorconfig`, `.nvmrc`, `.gitattributes`, and `CONTRIBUTING.md`.
 
 ### Fixed
 
+- Impossible calendar timestamps are rejected instead of rolling into the next month.
+- Ledger CSV exports neutralise cells that spreadsheets would execute as formulas.
 - Hotspot metrics keep values that contain colons instead of truncating them.
 - Epoch serial no longer leaks a stray digit outside its highlight.
 - Remaining non-existent Tailwind palette and border utilities replaced.
