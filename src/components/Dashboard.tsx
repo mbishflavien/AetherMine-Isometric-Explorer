@@ -711,11 +711,16 @@ export default function Dashboard({
               </div>
 
               {/* Ledger list */}
-              <div className="flex-1 overflow-y-auto max-h-[340px] pr-1 flex flex-col gap-2.5">
+              <div
+                role="list"
+                aria-label="Verified receipts"
+                className="flex-1 overflow-y-auto max-h-[340px] pr-1 flex flex-col gap-2.5"
+              >
                 {filteredLedgers.length > 0 ? (
                   filteredLedgers.map((rec) => (
                     <div
                       key={rec.id}
+                      role="listitem"
                       className="p-3 bg-[#0A0D14] border border-slate-800 hover:border-slate-700/80 rounded-lg transition"
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-1.5 mb-2">
