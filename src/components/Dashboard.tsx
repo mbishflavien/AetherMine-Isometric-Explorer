@@ -3,7 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useMemo, useRef, useState, useEffect } from "react";
+import {
+  useMemo,
+  useRef,
+  useState,
+  useEffect,
+  type KeyboardEvent as ReactKeyboardEvent,
+} from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Cpu,
@@ -90,6 +96,27 @@ export default function Dashboard({
   const [copiedHash, setCopiedHash] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<LedgerSortOrder>(loadLedgerSortOrder);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const mlTabRef = useRef<HTMLButtonElement | null>(null);
+  const ledgerTabRef = useRef<HTMLButtonElement | null>(null);
+
+  const handleTabKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+    const order: DashboardTab[] = ["ML_PIPELINE", "BLOCK_LEDGER"];
+    const index = order.indexOf(activeTab);
+    let nextIndex: number | null = null;
+    if (event.key === "ArrowRight") nextIndex = (index + 1) % order.length;
+    if (event.key === "ArrowLeft") {
+      nextIndex = (index - 1 + order.length) % order.length;
+    }
+    if (event.key === "Home") nextIndex = 0;
+    if (event.key === "End") nextIndex = order.length - 1;
+    if (nextIndex === null) return;
+    event.preventDefault();
+    audioEngine.playClick();
+    const next = order[nextIndex];
+    setActiveTab(next);
+    const ref = next === "ML_PIPELINE" ? mlTabRef : ledgerTabRef;
+    ref.current?.focus();
+  };
 
   // Jump to the ledger search with a slash while the ledger tab is open.
   useEffect(() => {
@@ -195,13 +222,20 @@ export default function Dashboard({
       
       {/* Control Room / LEDGER tabs bar */}
       <div className="flex bg-[#0A0D14] border-b border-[#1F2937]/40 h-12 shrink-0 items-center justify-between px-3">
-        <div className="flex gap-2" role="tablist" aria-label="Dashboard views">
+        <div
+          className="flex gap-2"
+          role="tablist"
+          aria-label="Dashboard views"
+          onKeyDown={handleTabKeyDown}
+        >
           <button
+            ref={mlTabRef}
             onClick={() => { audioEngine.playClick(); setActiveTab("ML_PIPELINE"); }}
             role="tab"
             id="ml-pipeline-tab"
             aria-selected={activeTab === "ML_PIPELINE"}
             aria-controls="ml-pipeline-panel"
+            tabIndex={activeTab === "ML_PIPELINE" ? 0 : -1}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold tracking-wider transition duration-150 flex items-center gap-2 ${
               activeTab === "ML_PIPELINE" 
                 ? "bg-[#00D4FF]/15 text-[#00D4FF] border border-[#00D4FF]/30" 
@@ -213,10 +247,12 @@ export default function Dashboard({
           
           <button
             onClick={() => { audioEngine.playClick(); setActiveTab("BLOCK_LEDGER"); }}
+            ref={ledgerTabRef}
             role="tab"
             id="block-ledger-tab"
             aria-selected={activeTab === "BLOCK_LEDGER"}
             aria-controls="block-ledger-panel"
+            tabIndex={activeTab === "BLOCK_LEDGER" ? 0 : -1}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-semibold tracking-wider transition duration-150 flex items-center gap-2 ${
               activeTab === "BLOCK_LEDGER" 
                 ? "bg-[#5DDB50]/15 text-[#39FF14] border border-[#39FF14]/30" 
