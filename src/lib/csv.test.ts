@@ -37,6 +37,18 @@ describe("buildLedgerCsv", () => {
     expect(row).toContain('"Say ""hi"""');
   });
 
+  it("neutralises cells that spreadsheets would execute as formulas", () => {
+    const csv = buildLedgerCsv([
+      record({ blockId: "=HYPERLINK(\"https://example.test\")" }),
+      record({ id: "TX-2", custodyParty: "+1 555 0100" }),
+      record({ id: "TX-3", custodyParty: "@SUM(A1:A9)" }),
+    ]);
+    const [, first, second, third] = csv.split("\n");
+    expect(first).toContain(`"'=HYPERLINK(""https://example.test"")"`);
+    expect(second).toContain("'+1 555 0100");
+    expect(third).toContain("'@SUM(A1:A9)");
+  });
+
   it("keeps the row count in step with the receipt list", () => {
     const csv = buildLedgerCsv([record(), record({ id: "TX-2" })]);
     expect(csv.split("\n")).toHaveLength(3);
